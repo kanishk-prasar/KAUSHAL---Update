@@ -1,0 +1,6 @@
+{
+  "name": "KAUSHAL - Government of Maharashtra",
+  "description": "Official KAUSHAL Portal - Knowledge & Analytics for Upgrading Skills, Hiring, And Livelihoods, Department of Skill Development & Entrepreneurship, Government of Maharashtra.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,316 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Background Gradients matching user artwork -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF9F3" />
+      <stop offset="50%" stop-color="#FFF3EB" />
+      <stop offset="100%" stop-color="#FFF8F2" />
+    </linearGradient>
+
+    <!-- Golden Sunrise Aura Arc -->
+    <radialGradient id="sunAura" cx="50%" cy="45%" r="48%">
+      <stop offset="0%" stop-color="#FDBA74" stop-opacity="0.38" />
+      <stop offset="45%" stop-color="#FED7AA" stop-opacity="0.22" />
+      <stop offset="75%" stop-color="#FFF3EB" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#FFF8F2" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Sector 1 Orange -->
+    <linearGradient id="gradOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EA580C" />
+      <stop offset="100%" stop-color="#C2410C" />
+    </linearGradient>
+
+    <!-- Sector 2 Blue -->
+    <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#0369A1" />
+    </linearGradient>
+
+    <!-- Sector 3 Green -->
+    <linearGradient id="gradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Sector 4 Red -->
+    <linearGradient id="gradRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DC2626" />
+      <stop offset="100%" stop-color="#B91C1C" />
+    </linearGradient>
+
+    <!-- Filter for soft drop shadow on badges & cards -->
+    <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1E293B" flood-opacity="0.08" />
+    </filter>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.12" />
+    </filter>
+
+    <!-- Workstation Desk Gradient -->
+    <linearGradient id="deskGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F1F5F9" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#E2E8F0" stop-opacity="0.95" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base Canvas Background -->
+  <rect width="1000" height="620" fill="url(#bgGrad)" />
+
+  <!-- Radiant Golden Arc behind center -->
+  <circle cx="500" cy="270" r="320" fill="url(#sunAura)" />
+  <circle cx="500" cy="270" r="230" fill="none" stroke="#FDBA74" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.35" />
+
+  <!-- Maharashtra State Outline Silhouette in center background -->
+  <g transform="translate(320, 100) scale(1.7)" opacity="0.22">
+    <path d="M40 25 C65 15, 110 10, 150 28 C175 40, 190 65, 180 105 C170 135, 145 160, 110 165 C80 170, 45 155, 25 125 C10 95, 15 50, 40 25 Z" fill="#FDBA74" />
+    <path d="M40 25 C65 15, 110 10, 150 28 C175 40, 190 65, 180 105 C170 135, 145 160, 110 165 C80 170, 45 155, 25 125 C10 95, 15 50, 40 25 Z" fill="none" stroke="#EA580C" stroke-width="1.2" opacity="0.5" />
+  </g>
+
+  <!-- Gateway of India Architectural Sketch on Right Background -->
+  <g transform="translate(800, 70) scale(0.9)" opacity="0.32">
+    <!-- Arch & Pillars -->
+    <path d="M30 150 L30 70 Q30 35 90 35 Q150 35 150 70 L150 150" stroke="#475569" stroke-width="2" fill="none" />
+    <path d="M55 150 L55 85 Q55 58 90 58 Q125 58 125 85 L125 150" stroke="#475569" stroke-width="1.8" fill="none" />
+    <rect x="20" y="55" width="20" height="95" stroke="#475569" stroke-width="1.8" fill="none" />
+    <rect x="140" y="55" width="20" height="95" stroke="#475569" stroke-width="1.8" fill="none" />
+    <!-- Turrets / Domes -->
+    <polygon points="30,30 20,55 40,55" stroke="#475569" stroke-width="1.5" fill="#CBD5E1" fill-opacity="0.3" />
+    <polygon points="150,30 140,55 160,55" stroke="#475569" stroke-width="1.5" fill="#CBD5E1" fill-opacity="0.3" />
+    <!-- Central Dome -->
+    <path d="M72 35 Q90 18 108 35" stroke="#475569" stroke-width="2" fill="#CBD5E1" fill-opacity="0.4" />
+    <!-- Flying birds in the sky -->
+    <path d="M-40 20 Q-32 14 -24 20 Q-16 14 -8 20" stroke="#64748B" stroke-width="1.5" fill="none" />
+    <path d="M-15 5 Q-9 0 -3 5 Q3 0 9 5" stroke="#64748B" stroke-width="1.2" fill="none" />
+    <path d="M-55 45 Q-49 40 -43 45 Q-37 40 -31 45" stroke="#64748B" stroke-width="1" fill="none" />
+  </g>
+
+  <!-- TOP ACCENT TEXTS -->
+  <!-- Left: "Skilled Maharashtra" -->
+  <g transform="translate(50, 48)">
+    <text x="0" y="0" font-family="Georgia, serif" font-style="italic" font-size="24" fill="#334155">Skilled</text>
+    <text x="0" y="24" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="20" fill="#0F172A" letter-spacing="-0.5">Maharashtra</text>
+    <rect x="0" y="32" width="56" height="4" rx="2" fill="#EA580C" />
+  </g>
+
+  <!-- Right: "Stronger Futures" -->
+  <g transform="translate(820, 48)">
+    <text x="0" y="0" font-family="Georgia, serif" font-style="italic" font-size="24" fill="#334155">Stronger</text>
+    <text x="0" y="24" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="20" fill="#0F172A" letter-spacing="-0.5">Futures</text>
+    <rect x="0" y="32" width="56" height="4" rx="2" fill="#059669" />
+  </g>
+
+  <!-- CONNECTING BEZIER TRAIL ACROSS 4 SECTORS -->
+  <path d="M140 170 C240 145, 300 180, 380 165 C460 150, 560 185, 630 165 C700 145, 800 175, 870 170" 
+        stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 5" opacity="0.65" fill="none" />
+
+  <!-- Colored Milestone Nodes on the Path -->
+  <circle cx="140" cy="170" r="4.5" fill="#EA580C" />
+  <circle cx="380" cy="165" r="4.5" fill="#0284C7" />
+  <circle cx="630" cy="165" r="4.5" fill="#059669" />
+  <circle cx="870" cy="170" r="4.5" fill="#DC2626" />
+
+  <!-- 4 CIRCULAR SECTOR BADGES WITH LABELS -->
+
+  <!-- 1. Industries & EV (Orange) -->
+  <g transform="translate(140, 110)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="url(#gradOrange)" />
+    <circle cx="0" cy="0" r="29" fill="none" stroke="#FFEDD5" stroke-width="2" />
+    <!-- Industry / Factory Icon -->
+    <g transform="translate(-13, -13) scale(1.1)" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M2 20h20" />
+      <path d="M7 20v-8l5 4v-4l5 4V4h3v16" />
+      <line x1="17" y1="8" x2="17" y2="8.01" />
+      <line x1="17" y1="12" x2="17" y2="12.01" />
+    </g>
+    <!-- Label underneath -->
+    <text x="0" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="13" fill="#0F172A">Industries &amp; EV</text>
+    <text x="0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" fill="#64748B" font-weight="500">Powering a Greener Tomorrow</text>
+  </g>
+
+  <!-- 2. Digital & IT (Blue) -->
+  <g transform="translate(380, 110)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="url(#gradBlue)" />
+    <circle cx="0" cy="0" r="29" fill="none" stroke="#E0F2FE" stroke-width="2" />
+    <!-- Code Brackets Icon -->
+    <g transform="translate(-13, -13) scale(1.1)" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
+    </g>
+    <!-- Label underneath -->
+    <text x="0" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="13" fill="#0F172A">Digital &amp; IT</text>
+    <text x="0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" fill="#64748B" font-weight="500">Building a Smarter Maharashtra</text>
+  </g>
+
+  <!-- 3. Solar & Renewable Energy (Green) -->
+  <g transform="translate(630, 110)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="url(#gradGreen)" />
+    <circle cx="0" cy="0" r="29" fill="none" stroke="#DCFCE7" stroke-width="2" />
+    <!-- Solar Sun Icon -->
+    <g transform="translate(-13, -13) scale(1.1)" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+    </g>
+    <!-- Label underneath -->
+    <text x="0" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="13" fill="#0F172A">Solar &amp; Renewable Energy</text>
+    <text x="0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" fill="#64748B" font-weight="500">Clean Energy Brighter Futures</text>
+  </g>
+
+  <!-- 4. Healthcare Apprenticeship (Red) -->
+  <g transform="translate(870, 110)" filter="url(#softShadow)">
+    <circle cx="0" cy="0" r="30" fill="url(#gradRed)" />
+    <circle cx="0" cy="0" r="29" fill="none" stroke="#FEE2E2" stroke-width="2" />
+    <!-- Heart & Pulse Icon -->
+    <g transform="translate(-13, -13) scale(1.1)" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+      <path d="M3.22 12H9.5l1.5-3 2 6 1.5-3h4.78" />
+    </g>
+    <!-- Label underneath -->
+    <text x="0" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="13" fill="#0F172A">Healthcare Apprenticeship</text>
+    <text x="0" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" fill="#64748B" font-weight="500">Stronger Communities Healthier Lives</text>
+  </g>
+
+  <!-- 4 PANORAMIC TRAINEES WORKBENCH SCENE (Continuous, Zero Borders) -->
+
+  <!-- Continuous modern workbench surface -->
+  <rect x="40" y="440" width="920" height="90" rx="10" fill="url(#deskGrad)" />
+  <line x1="40" y1="440" x2="960" y2="440" stroke="#CBD5E1" stroke-width="2" />
+
+  <!-- SECTION 1: EV & Automotive Trainee (Left) -->
+  <g transform="translate(40, 200)">
+    <!-- Background EV & Charging pillar -->
+    <rect x="25" y="100" width="45" height="110" rx="6" fill="#1E293B" opacity="0.25" />
+    <path d="M47 135 L42 155 H50 L45 175" stroke="#F59E0B" stroke-width="2.5" fill="none" stroke-linejoin="round" />
+    <!-- Trainee Figure -->
+    <!-- Head & Goggles -->
+    <circle cx="120" cy="115" r="28" fill="#C2410C" />
+    <path d="M102 110 Q120 95 138 110" fill="#1E293B" />
+    <rect x="105" y="108" width="30" height="12" rx="4" fill="#38BDF8" fill-opacity="0.65" stroke="#0284C7" stroke-width="1.5" />
+    <!-- Navy Uniform with Orange Collar -->
+    <path d="M85 150 C85 140, 155 140, 155 150 L165 240 H75 Z" fill="#0F172A" />
+    <polygon points="108,145 120,175 132,145" fill="#EA580C" />
+    <!-- Arm with wrench working on motor -->
+    <path d="M145 175 L175 210 L195 220" stroke="#C2410C" stroke-width="12" stroke-linecap="round" fill="none" />
+    <!-- Socket Wrench & Engine Component -->
+    <rect x="180" y="210" width="45" height="35" rx="5" fill="#475569" />
+    <circle cx="202" cy="227" r="10" fill="#64748B" stroke="#94A3B8" stroke-width="2" />
+    <line x1="170" y1="205" x2="200" y2="225" stroke="#CBD5E1" stroke-width="4.5" stroke-linecap="round" />
+
+    <!-- Table items: Stacked Tech Books ("AI", "Data Analytics", "Web Development") -->
+    <g transform="translate(25, 215)">
+      <!-- Book 3: Web Dev (Bottom) -->
+      <rect x="0" y="16" width="70" height="10" rx="2" fill="#0284C7" />
+      <text x="4" y="24" font-family="system-ui" font-size="7" font-weight="700" fill="#FFFFFF">WEB DEV</text>
+      <!-- Book 2: Data Analytics (Middle) -->
+      <rect x="4" y="8" width="66" height="9" rx="2" fill="#059669" />
+      <text x="7" y="15" font-family="system-ui" font-size="6.5" font-weight="700" fill="#FFFFFF">DATA ANALYTICS</text>
+      <!-- Book 1: AI (Top) -->
+      <rect x="8" y="0" width="62" height="9" rx="2" fill="#EA580C" />
+      <text x="12" y="7" font-family="system-ui" font-size="7" font-weight="800" fill="#FFFFFF">AI &amp; TECH</text>
+    </g>
+
+    <!-- Coffee Mug: <Code / Build / Empower> -->
+    <rect x="100" y="222" width="16" height="18" rx="2" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+    <path d="M116 226 Q122 231 116 236" fill="none" stroke="#CBD5E1" stroke-width="1.8" />
+    <text x="102" y="233" font-family="system-ui" font-size="4.5" font-weight="800" fill="#0284C7">&lt;/&gt;</text>
+  </g>
+
+  <!-- SECTION 2: IT & Software Engineer Trainee (Center-Left) -->
+  <g transform="translate(290, 200)">
+    <!-- Monitors with code in background -->
+    <rect x="40" y="80" width="90" height="60" rx="4" fill="#0F172A" stroke="#334155" stroke-width="1.5" />
+    <line x1="48" y1="92" x2="85" y2="92" stroke="#38BDF8" stroke-width="2" />
+    <line x1="48" y1="100" x2="110" y2="100" stroke="#34D399" stroke-width="2" />
+    <line x1="58" y1="108" x2="115" y2="108" stroke="#FBBF24" stroke-width="2" />
+    <line x1="58" y1="116" x2="95" y2="116" stroke="#F472B6" stroke-width="2" />
+    <line x1="48" y1="124" x2="75" y2="124" stroke="#94A3B8" stroke-width="2" />
+
+    <!-- Trainee Figure (Indian female software dev smiling) -->
+    <!-- Hair & Head -->
+    <path d="M90 100 C80 90, 140 90, 130 100 C145 125, 145 160, 135 170 C125 155, 95 155, 85 170 C75 160, 75 125, 90 100 Z" fill="#0F172A" />
+    <circle cx="110" cy="120" r="22" fill="#D97706" />
+    <!-- Eyes & Smile -->
+    <circle cx="103" cy="118" r="2" fill="#1E293B" />
+    <circle cx="117" cy="118" r="2" fill="#1E293B" />
+    <path d="M106 127 Q110 132 114 127" stroke="#1E293B" stroke-width="1.8" fill="none" stroke-linecap="round" />
+    <!-- Formal Light Blue Shirt & ID Badge -->
+    <path d="M85 150 C85 142, 135 142, 135 150 L145 240 H75 Z" fill="#BAE6FD" />
+    <!-- ID Lanyard -->
+    <path d="M102 145 L110 180 L118 145" stroke="#0284C7" stroke-width="2" fill="none" />
+    <rect x="105" y="180" width="10" height="14" rx="1.5" fill="#FFFFFF" stroke="#0284C7" stroke-width="1" />
+    <!-- Sleek Silver Laptop on Desk -->
+    <polygon points="80,225 140,225 150,240 70,240" fill="#94A3B8" />
+    <rect x="85" y="195" width="50" height="30" rx="3" fill="#0F172A" stroke="#CBD5E1" stroke-width="1.5" />
+    <polygon points="106,206 114,210 106,214" fill="#38BDF8" />
+  </g>
+
+  <!-- SECTION 3: Solar & Green Energy Technician (Center-Right) -->
+  <g transform="translate(530, 185)">
+    <!-- Urban skyline & trees in background -->
+    <rect x="25" y="70" width="30" height="60" fill="#94A3B8" opacity="0.3" />
+    <rect x="60" y="55" width="35" height="75" fill="#64748B" opacity="0.35" />
+    <path d="M105 115 Q115 85 125 115" fill="#10B981" opacity="0.4" />
+    <!-- Solar PV Panels array -->
+    <polygon points="30,210 120,185 160,220 70,245" fill="#1E3A8A" stroke="#38BDF8" stroke-width="1.5" />
+    <line x1="75" y1="198" x2="115" y2="232" stroke="#60A5FA" stroke-width="1.2" />
+    <line x1="50" y1="222" x2="140" y2="198" stroke="#60A5FA" stroke-width="1.2" />
+
+    <!-- Trainee Figure (Indian male solar tech) -->
+    <!-- Yellow Hardhat -->
+    <path d="M110 95 C98 95, 96 115, 110 115 C124 115, 122 95, 110 95 Z" fill="#FACC15" stroke="#CA8A04" stroke-width="1.5" />
+    <rect x="94" y="112" width="32" height="4" rx="2" fill="#EAB308" />
+    <circle cx="110" cy="125" r="18" fill="#B45309" />
+    <!-- Fluorescent Green/Yellow High-Vis Safety Vest -->
+    <path d="M90 150 C90 142, 130 142, 130 150 L138 240 H82 Z" fill="#84CC16" />
+    <rect x="98" y="152" width="6" height="85" fill="#E2E8F0" />
+    <rect x="116" y="152" width="6" height="85" fill="#E2E8F0" />
+    <!-- Cordless Power Drill in Hand -->
+    <rect x="135" y="195" width="22" height="15" rx="3" fill="#047857" />
+    <rect x="145" y="210" width="8" height="18" rx="2" fill="#1F2937" />
+    <line x1="135" y1="202" x2="120" y2="202" stroke="#94A3B8" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- SECTION 4: Healthcare & Nursing Professional (Right) -->
+  <g transform="translate(750, 185)">
+    <!-- Hospital bed, IV drip bag & cardiac monitor in background -->
+    <line x1="30" y1="50" x2="30" y2="210" stroke="#94A3B8" stroke-width="2" />
+    <rect x="22" y="70" width="16" height="26" rx="3" fill="#E0F2FE" stroke="#38BDF8" stroke-width="1" />
+    <!-- IV Tube -->
+    <path d="M30 96 Q38 135 48 165" stroke="#7DD3FC" stroke-width="1.5" fill="none" />
+    <!-- Bed & Resting Patient -->
+    <rect x="40" y="180" width="80" height="45" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2" />
+    <circle cx="60" cy="175" r="12" fill="#E2E8F0" />
+    <path d="M50 187 Q80 180 115 190" stroke="#CBD5E1" stroke-width="8" stroke-linecap="round" fill="none" />
+    <!-- Cardiac Monitor -->
+    <rect x="140" y="80" width="55" height="40" rx="4" fill="#0F172A" stroke="#334155" stroke-width="1.5" />
+    <path d="M145 100 H155 L160 90 L165 110 L170 98 L175 102 H190" stroke="#22C55E" stroke-width="1.8" fill="none" />
+
+    <!-- Trainee Nurse (Young Indian woman caring for patient) -->
+    <circle cx="105" cy="115" r="20" fill="#D97706" />
+    <path d="M88 105 C85 92, 125 92, 122 105 C122 120, 118 130, 118 135 C110 130, 95 130, 88 135 Z" fill="#1E293B" />
+    <!-- Medical Blue Scrubs -->
+    <path d="M85 145 C85 138, 125 138, 125 145 L135 240 H75 Z" fill="#0284C7" />
+    <!-- Stethoscope around neck -->
+    <path d="M96 142 Q105 170 114 142" stroke="#475569" stroke-width="2.5" fill="none" />
+    <circle cx="105" cy="172" r="4" fill="#94A3B8" />
+    <!-- White Medical Gloves -->
+    <circle cx="68" cy="190" r="7" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1" />
+  </g>
+
+  <!-- FLOATING BOTTOM-RIGHT BADGE: "Skills Today Better Livelihoods Tomorrow" -->
+  <g transform="translate(680, 480)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="280" height="74" rx="16" fill="#FFFFFF" />
+    <!-- Orange Square with Ascending Bar Chart -->
+    <rect x="16" y="14" width="46" height="46" rx="12" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.5" />
+    <!-- Bar chart icon inside -->
+    <g transform="translate(24, 22)">
+      <rect x="4" y="18" width="6" height="12" rx="1.5" fill="#EA580C" />
+      <rect x="12" y="11" width="6" height="19" rx="1.5" fill="#EA580C" />
+      <rect x="20" y="4" width="6" height="26" rx="1.5" fill="#EA580C" />
+    </g>
+    <!-- 3 Lines of Text -->
+    <text x="74" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="14.5" fill="#0F172A" letter-spacing="-0.3">Skills Today</text>
+    <text x="74" y="48" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="12" fill="#334155">Better Livelihoods</text>
+    <text x="74" y="62" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="10.5" fill="#94A3B8" letter-spacing="0.5">TOMORROW</text>
+  </g>
+</svg>
