@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   X,
   ArrowLeft,
-  Smartphone,
-  Lock,
-  Building2,
   ShieldCheck,
-  CheckCircle2,
   UserCheck,
   ChevronRight,
   GraduationCap,
@@ -20,7 +16,6 @@ interface SkillIndiaLoginModalProps {
   onClose: () => void;
   onLoginSuccess: (user: Partial<LearnerProfile> & { role?: string }) => void;
   lang: 'en' | 'mr' | 'hi';
-  initialMode?: 'login' | 'register';
 }
 
 type RoleType = 'trainee' | 'partner' | 'employer';
@@ -29,10 +24,8 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
   isOpen,
   onClose,
   onLoginSuccess,
-  lang: _lang,
-  initialMode = 'login'
+  lang: _lang
 }) => {
-  const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [selectedRole, setSelectedRole] = useState<RoleType>('trainee');
   const [step, setStep] = useState<'select' | 'auth'>('select');
 
@@ -44,44 +37,24 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
   // Partner Auth State
   const [partnerId, setPartnerId] = useState('');
   const [partnerPass, setPartnerPass] = useState('');
-  const [partnerOrgName, setPartnerOrgName] = useState('');
-  const [partnerType, setPartnerType] = useState('Training Institute / ITI');
-  const [partnerMobile, setPartnerMobile] = useState('');
 
   // Employer Auth State
   const [employerEmail, setEmployerEmail] = useState('');
   const [employerPass, setEmployerPass] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [industrySector, setIndustrySector] = useState('Automotive & EV Technology');
-  const [companyCinGst, setCompanyCinGst] = useState('');
-  const [employerMobile, setEmployerMobile] = useState('');
 
   // Terms and Privacy Modals
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
-  // Synchronize initial mode when modal is opened
   useEffect(() => {
     if (isOpen) {
-      setMode(initialMode);
-      setSelectedRole(initialMode === 'register' ? 'partner' : 'trainee');
+      setSelectedRole('trainee');
       setStep('select');
       setOtpSent(false);
       setOtp('');
+      setMobileNumber('');
     }
-  }, [isOpen, initialMode]);
-
-  // When switching between Login and Register in the UI
-  const handleSwitchMode = (newMode: 'login' | 'register') => {
-    setMode(newMode);
-    setStep('select');
-    if (newMode === 'register') {
-      // In register mode, only Partner and Employer are allowed
-      if (selectedRole === 'trainee') {
-        setSelectedRole('partner');
-      }
-    }
-  };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -101,7 +74,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
   const handleSendOtp = () => {
     if (mobileNumber.length >= 10) {
       setOtpSent(true);
-      setOtp('482910'); // Simulated autofill for seamless user testing
+      setOtp('482910'); // Simulated autofill for seamless testing
     }
   };
 
@@ -125,27 +98,11 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
     handleResetAndClose();
   };
 
-  const handleCompletePartnerRegister = () => {
-    onLoginSuccess({
-      name: partnerOrgName || 'Registered Skill Partner',
-      role: 'Partner'
-    });
-    handleResetAndClose();
-  };
-
   const handleCompleteEmployerLogin = (isDemo = false) => {
     onLoginSuccess({
       name: isDemo
         ? 'Mahindra Electric Mobility (Employer)'
         : employerEmail || 'Verified Employer',
-      role: 'Employer'
-    });
-    handleResetAndClose();
-  };
-
-  const handleCompleteEmployerRegister = () => {
-    onLoginSuccess({
-      name: companyName || 'Registered Enterprise Employer',
       role: 'Employer'
     });
     handleResetAndClose();
@@ -172,7 +129,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
         className="relative w-full max-w-[760px] bg-white rounded-2xl shadow-2xl p-5 sm:p-7 border border-gray-100 text-slate-800 my-auto transition-all"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Bar: Skill India Logo, Mode Selector & Close 'X' */}
+        {/* Top Bar: Skill India Emblem & Close Button (No switch button) */}
         <div className="flex items-center justify-between pb-2 border-b border-gray-100">
           {/* Authentic Skill India Emblem */}
           <div className="flex items-center gap-2.5">
@@ -215,42 +172,15 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             </div>
           </div>
 
-          {/* Mode Switcher Tabs (Login vs Register) & Close Button */}
-          <div className="flex items-center gap-3">
-            <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
-              <button
-                type="button"
-                onClick={() => handleSwitchMode('login')}
-                className={`px-3.5 sm:px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  mode === 'login'
-                    ? 'bg-[#103770] text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSwitchMode('register')}
-                className={`px-3.5 sm:px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  mode === 'register'
-                    ? 'bg-[#ea580c] text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Register
-              </button>
-            </div>
-
-            <button
-              id="close-login-popup-btn"
-              onClick={handleResetAndClose}
-              className="text-gray-400 hover:text-gray-900 p-1.5 rounded-full hover:bg-gray-100 transition cursor-pointer"
-              aria-label="Close modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          {/* Close Button Only */}
+          <button
+            id="close-login-popup-btn"
+            onClick={handleResetAndClose}
+            className="text-gray-400 hover:text-gray-900 p-1.5 rounded-full hover:bg-gray-100 transition cursor-pointer"
+            aria-label="Close modal"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* STEP 1: ROLE SELECTOR */}
@@ -259,350 +189,193 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             {/* Header Text */}
             <div className="text-center pb-2">
               <h2 className="text-xl sm:text-[22px] font-bold text-slate-900 tracking-tight">
-                {mode === 'login' ? 'Welcome to Skill India Digital Hub (SIDH)' : 'Register on Skill India Digital Hub (SIDH)'}
+                Welcome to Skill India Digital Hub (SIDH)
               </h2>
               <p className="text-xs sm:text-[13px] text-gray-500 mt-1 mb-5 font-normal">
-                {mode === 'login'
-                  ? 'Select your role to access your personalized vocational dashboard'
-                  : 'Select your entity type to complete official organization registration'}
+                Select your role to access your personalized vocational dashboard
               </p>
             </div>
 
-            {/* LOGIN MODE: 3 ROLES (Trainee, Partner, Employer) */}
-            {mode === 'login' && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-                {/* 1. Trainee */}
-                <div
-                  id="role-card-trainee"
-                  onClick={() => handleCardClick('trainee')}
-                  onDoubleClick={() => handleCardDoubleClick('trainee')}
-                  className={`relative flex flex-col sm:flex-row items-center sm:items-start gap-3 p-4 rounded-xl border transition-all cursor-pointer select-none text-left ${
-                    selectedRole === 'trainee'
-                      ? 'border-blue-600 bg-blue-50/20 shadow-sm ring-2 ring-blue-500/20'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
-                >
-                  {/* Radio selection circle */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <div
-                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
-                        selectedRole === 'trainee' ? 'border-blue-600 bg-white' : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      {selectedRole === 'trainee' && (
-                        <div className="w-2 h-2 rounded-full bg-blue-600 transition-transform scale-100" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Illustration Badge */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#edf3fc] flex items-center justify-center shrink-0 ml-3 sm:ml-4 mt-0.5">
-                    <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none">
-                      <path d="M6 38H42" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" />
-                      <path d="M12 28V42M18 28V42" stroke="#64748b" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="21" cy="18" r="5" fill="#fbcfe8" />
-                      <path d="M14 34C14 26 28 26 28 34" fill="#2563eb" />
-                      <rect x="25" y="24" width="16" height="11" rx="1.5" fill="#3b82f6" />
-                      <path d="M23 35H43" stroke="#1e40af" strokeWidth="2" strokeLinecap="round" />
-                      <rect x="27" y="26" width="12" height="7" rx="1" fill="#eff6ff" />
-                      <circle cx="33" cy="29.5" r="1.5" fill="#3b82f6" />
-                    </svg>
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex-1 min-w-0 text-center sm:text-left">
-                    <h3 className="font-bold text-slate-900 text-[15px] leading-tight">
-                      Trainee
-                    </h3>
-                    <p className="text-[11px] sm:text-[11.5px] text-gray-500 mt-1 leading-snug">
-                      Learn from courses, practice simulators, track practical hours &amp; job applications.
-                    </p>
+            {/* 3 ROLES (Trainee, Partner, Employer) */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+              {/* 1. Trainee */}
+              <div
+                id="role-card-trainee"
+                onClick={() => handleCardClick('trainee')}
+                onDoubleClick={() => handleCardDoubleClick('trainee')}
+                className={`relative flex flex-col sm:flex-row items-center sm:items-start gap-3 p-4 rounded-xl border transition-all cursor-pointer select-none text-left ${
+                  selectedRole === 'trainee'
+                    ? 'border-blue-600 bg-blue-50/20 shadow-sm ring-2 ring-blue-500/20'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                }`}
+              >
+                {/* Radio selection circle */}
+                <div className="absolute top-3.5 left-3.5">
+                  <div
+                    className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                      selectedRole === 'trainee' ? 'border-blue-600 bg-white' : 'border-gray-300 bg-white'
+                    }`}
+                  >
+                    {selectedRole === 'trainee' && (
+                      <div className="w-2 h-2 rounded-full bg-blue-600 transition-transform scale-100" />
+                    )}
                   </div>
                 </div>
 
-                {/* 2. Partner */}
-                <div
-                  id="role-card-partner"
-                  onClick={() => handleCardClick('partner')}
-                  onDoubleClick={() => handleCardDoubleClick('partner')}
-                  className={`relative flex flex-col sm:flex-row items-center sm:items-start gap-3 p-4 rounded-xl border transition-all cursor-pointer select-none text-left ${
-                    selectedRole === 'partner'
-                      ? 'border-blue-600 bg-blue-50/20 shadow-sm ring-2 ring-blue-500/20'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
-                >
-                  {/* Radio selection circle */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <div
-                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
-                        selectedRole === 'partner' ? 'border-blue-600 bg-white' : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      {selectedRole === 'partner' && (
-                        <div className="w-2 h-2 rounded-full bg-blue-600 transition-transform scale-100" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Illustration Badge */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#edf3fc] flex items-center justify-center shrink-0 ml-3 sm:ml-4 mt-0.5">
-                    <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none">
-                      <circle cx="16" cy="16" r="4.5" fill="#fed7aa" />
-                      <path d="M10 32C10 25 22 25 22 32" fill="#ea580c" />
-                      <circle cx="32" cy="16" r="4.5" fill="#fed7aa" />
-                      <path d="M26 32C26 25 38 25 38 32" fill="#1e40af" />
-                      <path d="M18 28L24 25L30 28" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx="24" cy="11" r="5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1.5" />
-                      <text x="24" y="14" textAnchor="middle" fill="#854d0e" fontSize="7" fontWeight="bold">₹</text>
-                    </svg>
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex-1 min-w-0 text-center sm:text-left">
-                    <h3 className="font-bold text-slate-900 text-[15px] leading-tight">
-                      Partner
-                    </h3>
-                    <p className="text-[11px] sm:text-[11.5px] text-gray-500 mt-1 leading-snug">
-                      Learning partner, ITI, Skill Academy, content provider &amp; training center.
-                    </p>
-                  </div>
+                {/* Illustration Badge */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#edf3fc] flex items-center justify-center shrink-0 ml-3 sm:ml-4 mt-0.5">
+                  <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none">
+                    <path d="M6 38H42" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" />
+                    <path d="M12 28V42M18 28V42" stroke="#64748b" strokeWidth="2" strokeLinecap="round" />
+                    <circle cx="21" cy="18" r="5" fill="#fbcfe8" />
+                    <path d="M14 34C14 26 28 26 28 34" fill="#2563eb" />
+                    <rect x="25" y="24" width="16" height="11" rx="1.5" fill="#3b82f6" />
+                    <path d="M23 35H43" stroke="#1e40af" strokeWidth="2" strokeLinecap="round" />
+                    <rect x="27" y="26" width="12" height="7" rx="1" fill="#eff6ff" />
+                    <circle cx="33" cy="29.5" r="1.5" fill="#3b82f6" />
+                  </svg>
                 </div>
 
-                {/* 3. Employer */}
-                <div
-                  id="role-card-employer"
-                  onClick={() => handleCardClick('employer')}
-                  onDoubleClick={() => handleCardDoubleClick('employer')}
-                  className={`relative flex flex-col sm:flex-row items-center sm:items-start gap-3 p-4 rounded-xl border transition-all cursor-pointer select-none text-left ${
-                    selectedRole === 'employer'
-                      ? 'border-blue-600 bg-blue-50/20 shadow-sm ring-2 ring-blue-500/20'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
-                >
-                  {/* Radio selection circle */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <div
-                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
-                        selectedRole === 'employer' ? 'border-blue-600 bg-white' : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      {selectedRole === 'employer' && (
-                        <div className="w-2 h-2 rounded-full bg-blue-600 transition-transform scale-100" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Illustration Badge */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#edf3fc] flex items-center justify-center shrink-0 ml-3 sm:ml-4 mt-0.5">
-                    <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none">
-                      <rect x="8" y="14" width="16" height="26" rx="2" fill="#3b82f6" />
-                      <rect x="22" y="10" width="18" height="30" rx="2" fill="#1e40af" />
-                      <rect x="11" y="18" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="17" y="18" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="11" y="24" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="17" y="24" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="11" y="30" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="17" y="30" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="26" y="14" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="33" y="14" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="26" y="20" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="33" y="20" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="26" y="26" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="33" y="26" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="25" y="32" width="16" height="10" rx="1.5" fill="#ea580c" stroke="#c2410c" strokeWidth="1" />
-                      <path d="M30 32V30C30 29 31 28 32 28H34C35 28 36 29 36 30V32" stroke="#ffffff" strokeWidth="1.2" />
-                      <line x1="25" y1="36" x2="41" y2="36" stroke="#c2410c" strokeWidth="1" />
-                    </svg>
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex-1 min-w-0 text-center sm:text-left">
-                    <h3 className="font-bold text-slate-900 text-[15px] leading-tight">
-                      Employer
-                    </h3>
-                    <p className="text-[11px] sm:text-[11.5px] text-gray-500 mt-1 leading-snug">
-                      Post vacancies &amp; apprenticeships, hire verified talent, trace career outcomes.
-                    </p>
-                  </div>
+                {/* Text */}
+                <div className="flex-1 min-w-0 text-center sm:text-left">
+                  <h3 className="font-bold text-slate-900 text-[15px] leading-tight">
+                    Trainee
+                  </h3>
+                  <p className="text-[11px] sm:text-[11.5px] text-gray-500 mt-1 leading-snug">
+                    Learn from courses, practice simulators, track practical hours &amp; job applications.
+                  </p>
                 </div>
               </div>
-            )}
 
-            {/* REGISTRATION MODE: ONLY PARTNER & EMPLOYER (REST REMOVED) */}
-            {mode === 'register' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                {/* 1. Partner Registration */}
-                <div
-                  id="role-card-register-partner"
-                  onClick={() => handleCardClick('partner')}
-                  onDoubleClick={() => handleCardDoubleClick('partner')}
-                  className={`relative flex items-center gap-3.5 p-4 sm:p-5 rounded-xl border transition-all cursor-pointer select-none text-left ${
-                    selectedRole === 'partner'
-                      ? 'border-orange-600 bg-orange-50/20 shadow-sm ring-2 ring-orange-500/20'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
-                >
-                  {/* Radio selection circle */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <div
-                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
-                        selectedRole === 'partner' ? 'border-orange-600 bg-white' : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      {selectedRole === 'partner' && (
-                        <div className="w-2 h-2 rounded-full bg-orange-600 transition-transform scale-100" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Illustration Badge */}
-                  <div className="w-16 h-16 rounded-full bg-[#fff4ed] border border-orange-100 flex items-center justify-center shrink-0 ml-4">
-                    <svg className="w-11 h-11" viewBox="0 0 48 48" fill="none">
-                      <circle cx="16" cy="16" r="4.5" fill="#fed7aa" />
-                      <path d="M10 32C10 25 22 25 22 32" fill="#ea580c" />
-                      <circle cx="32" cy="16" r="4.5" fill="#fed7aa" />
-                      <path d="M26 32C26 25 38 25 38 32" fill="#1e40af" />
-                      <path d="M18 28L24 25L30 28" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx="24" cy="11" r="5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1.5" />
-                      <text x="24" y="14" textAnchor="middle" fill="#854d0e" fontSize="7" fontWeight="bold">₹</text>
-                    </svg>
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex-1 min-w-0 pr-1">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="font-bold text-slate-900 text-[16px] leading-tight">
-                        Partner
-                      </h3>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 font-bold uppercase">
-                        Institute
-                      </span>
-                    </div>
-                    <p className="text-[11.5px] sm:text-[12px] text-gray-500 mt-1 leading-snug">
-                      Register as Training Partner, Affiliated ITI, Skill Center, or Curriculum Assessment Body.
-                    </p>
+              {/* 2. Partner */}
+              <div
+                id="role-card-partner"
+                onClick={() => handleCardClick('partner')}
+                onDoubleClick={() => handleCardDoubleClick('partner')}
+                className={`relative flex flex-col sm:flex-row items-center sm:items-start gap-3 p-4 rounded-xl border transition-all cursor-pointer select-none text-left ${
+                  selectedRole === 'partner'
+                    ? 'border-blue-600 bg-blue-50/20 shadow-sm ring-2 ring-blue-500/20'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                }`}
+              >
+                {/* Radio selection circle */}
+                <div className="absolute top-3.5 left-3.5">
+                  <div
+                    className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                      selectedRole === 'partner' ? 'border-blue-600 bg-white' : 'border-gray-300 bg-white'
+                    }`}
+                  >
+                    {selectedRole === 'partner' && (
+                      <div className="w-2 h-2 rounded-full bg-blue-600 transition-transform scale-100" />
+                    )}
                   </div>
                 </div>
 
-                {/* 2. Employer Registration */}
-                <div
-                  id="role-card-register-employer"
-                  onClick={() => handleCardClick('employer')}
-                  onDoubleClick={() => handleCardDoubleClick('employer')}
-                  className={`relative flex items-center gap-3.5 p-4 sm:p-5 rounded-xl border transition-all cursor-pointer select-none text-left ${
-                    selectedRole === 'employer'
-                      ? 'border-orange-600 bg-orange-50/20 shadow-sm ring-2 ring-orange-500/20'
-                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                  }`}
-                >
-                  {/* Radio selection circle */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <div
-                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
-                        selectedRole === 'employer' ? 'border-orange-600 bg-white' : 'border-gray-300 bg-white'
-                      }`}
-                    >
-                      {selectedRole === 'employer' && (
-                        <div className="w-2 h-2 rounded-full bg-orange-600 transition-transform scale-100" />
-                      )}
-                    </div>
-                  </div>
+                {/* Illustration Badge */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#edf3fc] flex items-center justify-center shrink-0 ml-3 sm:ml-4 mt-0.5">
+                  <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none">
+                    <circle cx="16" cy="16" r="4.5" fill="#fed7aa" />
+                    <path d="M10 32C10 25 22 25 22 32" fill="#ea580c" />
+                    <circle cx="32" cy="16" r="4.5" fill="#fed7aa" />
+                    <path d="M26 32C26 25 38 25 38 32" fill="#1e40af" />
+                    <path d="M18 28L24 25L30 28" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="24" cy="11" r="5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1.5" />
+                    <text x="24" y="14" textAnchor="middle" fill="#854d0e" fontSize="7" fontWeight="bold">₹</text>
+                  </svg>
+                </div>
 
-                  {/* Illustration Badge */}
-                  <div className="w-16 h-16 rounded-full bg-[#edf3fc] border border-blue-100 flex items-center justify-center shrink-0 ml-4">
-                    <svg className="w-11 h-11" viewBox="0 0 48 48" fill="none">
-                      <rect x="8" y="14" width="16" height="26" rx="2" fill="#3b82f6" />
-                      <rect x="22" y="10" width="18" height="30" rx="2" fill="#1e40af" />
-                      <rect x="11" y="18" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="17" y="18" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="11" y="24" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="17" y="24" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="11" y="30" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="17" y="30" width="3" height="3" rx="0.5" fill="#eff6ff" />
-                      <rect x="26" y="14" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="33" y="14" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="26" y="20" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="33" y="20" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="26" y="26" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="33" y="26" width="3" height="3" rx="0.5" fill="#93c5fd" />
-                      <rect x="25" y="32" width="16" height="10" rx="1.5" fill="#ea580c" stroke="#c2410c" strokeWidth="1" />
-                      <path d="M30 32V30C30 29 31 28 32 28H34C35 28 36 29 36 30V32" stroke="#ffffff" strokeWidth="1.2" />
-                      <line x1="25" y1="36" x2="41" y2="36" stroke="#c2410c" strokeWidth="1" />
-                    </svg>
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex-1 min-w-0 pr-1">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="font-bold text-slate-900 text-[16px] leading-tight">
-                        Employer
-                      </h3>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold uppercase">
-                        Enterprise
-                      </span>
-                    </div>
-                    <p className="text-[11.5px] sm:text-[12px] text-gray-500 mt-1 leading-snug">
-                      Register your enterprise to post apprenticeships, recruit certified youth &amp; access wage subsidies.
-                    </p>
-                  </div>
+                {/* Text */}
+                <div className="flex-1 min-w-0 text-center sm:text-left">
+                  <h3 className="font-bold text-slate-900 text-[15px] leading-tight">
+                    Partner
+                  </h3>
+                  <p className="text-[11px] sm:text-[11.5px] text-gray-500 mt-1 leading-snug">
+                    Learning partner, ITI, Skill Academy, content provider &amp; training center.
+                  </p>
                 </div>
               </div>
-            )}
+
+              {/* 3. Employer */}
+              <div
+                id="role-card-employer"
+                onClick={() => handleCardClick('employer')}
+                onDoubleClick={() => handleCardDoubleClick('employer')}
+                className={`relative flex flex-col sm:flex-row items-center sm:items-start gap-3 p-4 rounded-xl border transition-all cursor-pointer select-none text-left ${
+                  selectedRole === 'employer'
+                    ? 'border-blue-600 bg-blue-50/20 shadow-sm ring-2 ring-blue-500/20'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                }`}
+              >
+                {/* Radio selection circle */}
+                <div className="absolute top-3.5 left-3.5">
+                  <div
+                    className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                      selectedRole === 'employer' ? 'border-blue-600 bg-white' : 'border-gray-300 bg-white'
+                    }`}
+                  >
+                    {selectedRole === 'employer' && (
+                      <div className="w-2 h-2 rounded-full bg-blue-600 transition-transform scale-100" />
+                    )}
+                  </div>
+                </div>
+
+                {/* Illustration Badge */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#edf3fc] flex items-center justify-center shrink-0 ml-3 sm:ml-4 mt-0.5">
+                  <svg className="w-10 h-10" viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="14" width="16" height="26" rx="2" fill="#3b82f6" />
+                    <rect x="22" y="10" width="18" height="30" rx="2" fill="#1e40af" />
+                    <rect x="11" y="18" width="3" height="3" rx="0.5" fill="#eff6ff" />
+                    <rect x="17" y="18" width="3" height="3" rx="0.5" fill="#eff6ff" />
+                    <rect x="11" y="24" width="3" height="3" rx="0.5" fill="#eff6ff" />
+                    <rect x="17" y="24" width="3" height="3" rx="0.5" fill="#eff6ff" />
+                    <rect x="11" y="30" width="3" height="3" rx="0.5" fill="#eff6ff" />
+                    <rect x="17" y="30" width="3" height="3" rx="0.5" fill="#eff6ff" />
+                    <rect x="26" y="14" width="3" height="3" rx="0.5" fill="#93c5fd" />
+                    <rect x="33" y="14" width="3" height="3" rx="0.5" fill="#93c5fd" />
+                    <rect x="26" y="20" width="3" height="3" rx="0.5" fill="#93c5fd" />
+                    <rect x="33" y="20" width="3" height="3" rx="0.5" fill="#93c5fd" />
+                    <rect x="26" y="26" width="3" height="3" rx="0.5" fill="#93c5fd" />
+                    <rect x="33" y="26" width="3" height="3" rx="0.5" fill="#93c5fd" />
+                    <rect x="25" y="32" width="16" height="10" rx="1.5" fill="#ea580c" stroke="#c2410c" strokeWidth="1" />
+                    <path d="M30 32V30C30 29 31 28 32 28H34C35 28 36 29 36 30V32" stroke="#ffffff" strokeWidth="1.2" />
+                    <line x1="25" y1="36" x2="41" y2="36" stroke="#c2410c" strokeWidth="1" />
+                  </svg>
+                </div>
+
+                {/* Text */}
+                <div className="flex-1 min-w-0 text-center sm:text-left">
+                  <h3 className="font-bold text-slate-900 text-[15px] leading-tight">
+                    Employer
+                  </h3>
+                  <p className="text-[11px] sm:text-[11.5px] text-gray-500 mt-1 leading-snug">
+                    Post vacancies &amp; apprenticeships, hire verified talent, trace career outcomes.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             {/* Continue Action Button */}
             <div className="mt-6 flex justify-center">
               <button
                 id="continue-role-btn"
                 onClick={handleContinue}
-                className={`w-full sm:w-auto min-w-[260px] px-7 py-3 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer ${
-                  mode === 'register'
-                    ? 'bg-[#ea580c] hover:bg-[#c2410c]'
-                    : 'bg-[#103770] hover:bg-[#0b2955]'
-                }`}
+                className="w-full sm:w-auto min-w-[260px] px-7 py-3 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer bg-[#103770] hover:bg-[#0b2955]"
               >
                 <span>
-                  {mode === 'register'
-                    ? `Continue Registration as ${selectedRole === 'partner' ? 'Partner' : 'Employer'}`
-                    : `Continue Login as ${
-                        selectedRole === 'trainee'
-                          ? 'Trainee'
-                          : selectedRole === 'partner'
-                          ? 'Partner'
-                          : 'Employer'
-                      }`}
+                  {`Continue Login as ${
+                    selectedRole === 'trainee'
+                      ? 'Trainee'
+                      : selectedRole === 'partner'
+                      ? 'Partner'
+                      : 'Employer'
+                  }`}
                 </span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Bottom Footer Switcher & Legal Links */}
-            <div className="mt-6 text-center space-y-2 border-t border-gray-100 pt-4">
-              <div className="text-xs text-slate-600">
-                {mode === 'login' ? (
-                  <span>
-                    New Partner or Employer organization?{' '}
-                    <button
-                      type="button"
-                      onClick={() => handleSwitchMode('register')}
-                      className="text-[#ea580c] hover:underline font-bold cursor-pointer"
-                    >
-                      Register here →
-                    </button>
-                  </span>
-                ) : (
-                  <span>
-                    Already registered with Skill India?{' '}
-                    <button
-                      type="button"
-                      onClick={() => handleSwitchMode('login')}
-                      className="text-[#103770] hover:underline font-bold cursor-pointer"
-                    >
-                      Login here →
-                    </button>
-                  </span>
-                )}
-              </div>
-
+            {/* Bottom Legal Links (No switcher link) */}
+            <div className="mt-6 text-center border-t border-gray-100 pt-4">
               <p className="text-[11.5px] sm:text-xs text-gray-500 leading-normal">
                 By choosing to continue, you agree to accept all applicable{' '}
                 <button
@@ -625,7 +398,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
           </div>
         )}
 
-        {/* STEP 2: AUTHENTICATION / REGISTRATION FORM */}
+        {/* STEP 2: AUTHENTICATION FORM */}
         {step === 'auth' && (
           <div className="mt-3 space-y-5">
             {/* Back button */}
@@ -641,7 +414,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                  {mode === 'register' ? 'Registering Organization as' : 'Logging in as'}
+                  Logging in as
                 </span>
                 <div className="text-sm font-bold text-[#103770] flex items-center gap-1.5 mt-0.5">
                   {selectedRole === 'trainee' && <GraduationCap className="w-4 h-4 text-blue-600" />}
@@ -654,15 +427,13 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
                   </span>
                 </div>
               </div>
-              <span className={`text-xs px-2.5 py-1 rounded-full font-bold ${
-                mode === 'register' ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'
-              }`}>
-                {mode === 'register' ? 'SIDH Registration' : 'SIDH Gateway'}
+              <span className="text-xs px-2.5 py-1 rounded-full font-bold bg-blue-100 text-blue-800">
+                SIDH Gateway
               </span>
             </div>
 
             {/* FORM 1: TRAINEE LOGIN */}
-            {mode === 'login' && selectedRole === 'trainee' && (
+            {selectedRole === 'trainee' && (
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -743,7 +514,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             )}
 
             {/* FORM 2: PARTNER LOGIN */}
-            {mode === 'login' && selectedRole === 'partner' && (
+            {selectedRole === 'partner' && (
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -787,7 +558,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             )}
 
             {/* FORM 3: EMPLOYER LOGIN */}
-            {mode === 'login' && selectedRole === 'employer' && (
+            {selectedRole === 'employer' && (
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -829,199 +600,6 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
                 </div>
               </div>
             )}
-
-            {/* FORM 4: PARTNER REGISTRATION */}
-            {mode === 'register' && selectedRole === 'partner' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Organization / Institute Name
-                    </label>
-                    <input
-                      type="text"
-                      value={partnerOrgName}
-                      onChange={(e) => setPartnerOrgName(e.target.value)}
-                      placeholder="e.g. Pune Regional Skill Development Academy"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Partner Classification
-                    </label>
-                    <select
-                      value={partnerType}
-                      onChange={(e) => setPartnerType(e.target.value)}
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 bg-white"
-                    >
-                      <option value="Training Institute / ITI">Training Institute / ITI</option>
-                      <option value="Center of Excellence (CoE)">Center of Excellence (CoE)</option>
-                      <option value="Assessment Agency">Assessment Agency</option>
-                      <option value="Industry Skill Academy">Industry Skill Academy</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Official Corporate Email
-                    </label>
-                    <input
-                      type="email"
-                      value={partnerId}
-                      onChange={(e) => setPartnerId(e.target.value)}
-                      placeholder="admin@institute.ac.in"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Authorized Contact Mobile
-                    </label>
-                    <div className="flex rounded-lg border border-gray-300 overflow-hidden">
-                      <span className="px-2.5 py-2 bg-gray-100 text-gray-600 text-xs font-semibold border-r border-gray-300 flex items-center">
-                        +91
-                      </span>
-                      <input
-                        type="tel"
-                        value={partnerMobile}
-                        onChange={(e) => setPartnerMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                        placeholder="98765 43210"
-                        className="flex-1 px-3 py-2 text-sm text-slate-900 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Set Security Password
-                  </label>
-                  <input
-                    type="password"
-                    value={partnerPass}
-                    onChange={(e) => setPartnerPass(e.target.value)}
-                    placeholder="Create a strong password (min 8 chars)"
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-                  />
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    onClick={handleCompletePartnerRegister}
-                    className="w-full py-2.5 bg-[#ea580c] hover:bg-[#c2410c] text-white rounded-xl font-bold text-sm shadow transition cursor-pointer"
-                  >
-                    Submit Partner Registration
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* FORM 5: EMPLOYER REGISTRATION */}
-            {mode === 'register' && selectedRole === 'employer' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Company / Legal Entity Name
-                    </label>
-                    <input
-                      type="text"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="e.g. Bharat EV Mobility Ltd"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Industry Sector
-                    </label>
-                    <select
-                      value={industrySector}
-                      onChange={(e) => setIndustrySector(e.target.value)}
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 bg-white"
-                    >
-                      <option value="Automotive & EV Technology">Automotive &amp; EV Technology</option>
-                      <option value="IT, Software & Electronics">IT, Software &amp; Electronics</option>
-                      <option value="Solar, Wind & Clean Energy">Solar, Wind &amp; Clean Energy</option>
-                      <option value="Healthcare & Nursing Apprenticeships">Healthcare &amp; Nursing</option>
-                      <option value="Precision Engineering & Manufacturing">Precision Engineering</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      HR / Talent Acquisition Email
-                    </label>
-                    <input
-                      type="email"
-                      value={employerEmail}
-                      onChange={(e) => setEmployerEmail(e.target.value)}
-                      placeholder="hr@bharatev.in"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Company Registration (GSTIN / CIN)
-                    </label>
-                    <input
-                      type="text"
-                      value={companyCinGst}
-                      onChange={(e) => setCompanyCinGst(e.target.value)}
-                      placeholder="27AABCU9603R1ZM"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100 uppercase"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      HR Contact Mobile
-                    </label>
-                    <div className="flex rounded-lg border border-gray-300 overflow-hidden">
-                      <span className="px-2.5 py-2 bg-gray-100 text-gray-600 text-xs font-semibold border-r border-gray-300 flex items-center">
-                        +91
-                      </span>
-                      <input
-                        type="tel"
-                        value={employerMobile}
-                        onChange={(e) => setEmployerMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                        placeholder="98765 43210"
-                        className="flex-1 px-3 py-2 text-sm text-slate-900 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Set Portal Password
-                    </label>
-                    <input
-                      type="password"
-                      value={employerPass}
-                      onChange={(e) => setEmployerPass(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-orange-600 focus:ring-2 focus:ring-orange-100"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    onClick={handleCompleteEmployerRegister}
-                    className="w-full py-2.5 bg-[#ea580c] hover:bg-[#c2410c] text-white rounded-xl font-bold text-sm shadow transition cursor-pointer"
-                  >
-                    Submit Employer Registration
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
@@ -1031,7 +609,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 space-y-3">
               <div className="flex items-center justify-between border-b pb-2">
                 <h3 className="text-base font-bold text-slate-800">Terms &amp; Conditions</h3>
-                <button onClick={() => setShowTermsModal(false)} className="text-gray-400 hover:text-gray-700">
+                <button onClick={() => setShowTermsModal(false)} className="text-gray-400 hover:text-gray-700 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -1040,7 +618,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
               </p>
               <button
                 onClick={() => setShowTermsModal(false)}
-                className="w-full py-2 bg-[#103770] text-white rounded-lg text-xs font-semibold"
+                className="w-full py-2 bg-[#103770] text-white rounded-lg text-xs font-semibold cursor-pointer"
               >
                 I Understand &amp; Agree
               </button>
@@ -1054,7 +632,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 space-y-3">
               <div className="flex items-center justify-between border-b pb-2">
                 <h3 className="text-base font-bold text-slate-800">Privacy Policy (DPDP 2023 Aligned)</h3>
-                <button onClick={() => setShowPrivacyModal(false)} className="text-gray-400 hover:text-gray-700">
+                <button onClick={() => setShowPrivacyModal(false)} className="text-gray-400 hover:text-gray-700 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -1063,7 +641,7 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
               </p>
               <button
                 onClick={() => setShowPrivacyModal(false)}
-                className="w-full py-2 bg-[#103770] text-white rounded-lg text-xs font-semibold"
+                className="w-full py-2 bg-[#103770] text-white rounded-lg text-xs font-semibold cursor-pointer"
               >
                 Accept Privacy Policy
               </button>

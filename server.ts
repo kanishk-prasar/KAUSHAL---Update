@@ -1,12 +1,83 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
+import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: '25mb' }));
+
+// Endpoint to save hero image directly to public/images and dist/images
+app.post('/api/upload-hero-image', (req: Request, res: Response) => {
+  try {
+    const { dataUrl } = req.body;
+    if (!dataUrl || typeof dataUrl !== 'string') {
+      return res.status(400).json({ error: 'Missing dataUrl' });
+    }
+    const matches = dataUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches) {
+      return res.status(400).json({ error: 'Invalid dataUrl format' });
+    }
+    const buffer = Buffer.from(matches[2], 'base64');
+    const imagesDir = path.join(process.cwd(), 'public', 'images');
+    if (!fs.existsSync(imagesDir)) {
+      fs.mkdirSync(imagesDir, { recursive: true });
+    }
+    
+    fs.writeFileSync(path.join(imagesDir, 'hero-composite.png'), buffer);
+    fs.writeFileSync(path.join(imagesDir, 'hero-composite.png.png'), buffer);
+    fs.writeFileSync(path.join(process.cwd(), 'public', 'hero-composite.png'), buffer);
+    fs.writeFileSync(path.join(process.cwd(), 'public', 'hero-composite.png.png'), buffer);
+
+    const distImagesDir = path.join(process.cwd(), 'dist', 'images');
+    if (fs.existsSync(distImagesDir)) {
+      fs.writeFileSync(path.join(distImagesDir, 'hero-composite.png'), buffer);
+      fs.writeFileSync(path.join(distImagesDir, 'hero-composite.png.png'), buffer);
+    }
+
+    res.json({ success: true, message: 'Hero image saved to disk successfully' });
+  } catch (err: any) {
+    console.error('Error saving hero image:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint to save KAUSHAL logo directly to public/images and dist/images
+app.post('/api/upload-kaushal-logo', (req: Request, res: Response) => {
+  try {
+    const { dataUrl } = req.body;
+    if (!dataUrl || typeof dataUrl !== 'string') {
+      return res.status(400).json({ error: 'Missing dataUrl' });
+    }
+    const matches = dataUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches) {
+      return res.status(400).json({ error: 'Invalid dataUrl format' });
+    }
+    const buffer = Buffer.from(matches[2], 'base64');
+    const imagesDir = path.join(process.cwd(), 'public', 'images');
+    if (!fs.existsSync(imagesDir)) {
+      fs.mkdirSync(imagesDir, { recursive: true });
+    }
+    
+    fs.writeFileSync(path.join(imagesDir, 'kaushal-logo.png'), buffer);
+    fs.writeFileSync(path.join(imagesDir, 'kaushal-logo.png.png'), buffer);
+    fs.writeFileSync(path.join(process.cwd(), 'public', 'kaushal-logo.png'), buffer);
+    fs.writeFileSync(path.join(process.cwd(), 'public', 'kaushal-logo.png.png'), buffer);
+
+    const distImagesDir = path.join(process.cwd(), 'dist', 'images');
+    if (fs.existsSync(distImagesDir)) {
+      fs.writeFileSync(path.join(distImagesDir, 'kaushal-logo.png'), buffer);
+      fs.writeFileSync(path.join(distImagesDir, 'kaushal-logo.png.png'), buffer);
+    }
+
+    res.json({ success: true, message: 'KAUSHAL logo saved to disk successfully' });
+  } catch (err: any) {
+    console.error('Error saving kaushal logo:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Lazy-initialized Gemini client
 let aiClient: GoogleGenAI | null = null;

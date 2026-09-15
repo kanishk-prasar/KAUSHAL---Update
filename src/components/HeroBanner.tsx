@@ -90,20 +90,21 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </div>
             </div>
 
-            {/* RIGHT CONTENT (Single responsive <img> tag with source /images/hero-composite.png) */}
+            {/* RIGHT CONTENT (Single responsive <img> tag permanently displaying the 2nd composite image) */}
             <div className="lg:col-span-7 xl:col-span-7 relative flex items-center justify-center lg:justify-end">
               <div className="relative w-full max-w-[720px] lg:max-w-none">
                 <img
                   src="/images/hero-composite.png"
                   onError={(e) => {
-                    // Fallback to SVG banner if needed
                     const target = e.currentTarget;
-                    if (!target.src.endsWith('/hero-banner.svg')) {
-                      target.src = '/hero-banner.svg';
+                    if (target.src.endsWith('/images/hero-composite.png')) {
+                      target.src = '/hero-composite.png';
+                    } else if (target.src.endsWith('/hero-composite.png')) {
+                      target.src = '/images/hero-composite.png.png';
                     }
                   }}
                   alt="KAUSHAL - Skilled Maharashtra, Stronger Futures"
-                  className="w-full h-auto object-contain block select-none pointer-events-none drop-shadow-sm transition-opacity duration-300"
+                  className="w-full h-auto object-contain block select-none pointer-events-none drop-shadow-sm transition-opacity duration-300 rounded-xl"
                 />
               </div>
             </div>

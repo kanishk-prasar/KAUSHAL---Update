@@ -8,6 +8,7 @@ import { PracticalSimulator } from './components/PracticalSimulator';
 import { DigitalPassport } from './components/DigitalPassport';
 import { ArchitectureModal } from './components/ArchitectureModal';
 import { SkillIndiaLoginModal } from './components/SkillIndiaLoginModal';
+import { SkillIndiaRegisterModal } from './components/SkillIndiaRegisterModal';
 import { HowItWorksModal } from './components/HowItWorksModal';
 import { UpdatesModal } from './components/UpdatesModal';
 import { INITIAL_USER_PROFILE } from './data/mockData';
@@ -19,7 +20,7 @@ export default function App() {
   const [lang, setLang] = useState<'en' | 'mr'>('en');
   const [archModalOpen, setArchModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [updatesModalOpen, setUpdatesModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -115,10 +116,8 @@ export default function App() {
         setLang={setLang}
         profile={profile}
         onOpenArchModal={() => setArchModalOpen(true)}
-        onOpenLoginModal={(mode = 'login') => {
-          setAuthModalMode(mode);
-          setLoginModalOpen(true);
-        }}
+        onOpenLoginModal={() => setLoginModalOpen(true)}
+        onOpenRegisterModal={() => setRegisterModalOpen(true)}
         onOpenHowItWorksModal={() => setHowItWorksOpen(true)}
         onOpenUpdatesModal={() => setUpdatesModalOpen(true)}
       />
@@ -196,10 +195,9 @@ export default function App() {
         onClose={() => setArchModalOpen(false)}
       />
 
-      {/* Skill India Digital Hub (SIDH) Login / Register Modal */}
+      {/* Skill India Digital Hub (SIDH) Separate Login Modal */}
       <SkillIndiaLoginModal
         isOpen={loginModalOpen}
-        initialMode={authModalMode}
         onClose={() => setLoginModalOpen(false)}
         lang={lang}
         onLoginSuccess={(userData) => {
@@ -210,6 +208,16 @@ export default function App() {
             phone: userData.phone || prev.phone
           }));
           showToast(`Logged in successfully to Skill India Digital Hub as ${userData.name || 'User'}!`);
+        }}
+      />
+
+      {/* Skill India Digital Hub (SIDH) Separate Registration Modal */}
+      <SkillIndiaRegisterModal
+        isOpen={registerModalOpen}
+        onClose={() => setRegisterModalOpen(false)}
+        lang={lang}
+        onRegisterSuccess={(userData) => {
+          showToast(`Registration submitted successfully for ${userData.name || 'Organization'}! SIDH credentials dispatched.`);
         }}
       />
 
@@ -261,13 +269,10 @@ export default function App() {
               <ul className="space-y-1.5 text-[11px] text-sky-100/90">
                 <li>
                   <button
-                    onClick={() => {
-                      setAuthModalMode('register');
-                      setLoginModalOpen(true);
-                    }}
+                    onClick={() => setRegisterModalOpen(true)}
                     className="hover:text-white hover:underline cursor-pointer flex items-center gap-1.5"
                   >
-                    <span>महास्वयं नोंदणी / Skill India Digital Hub</span>
+                    <span>महास्वयं नोंदणी / Skill India Digital Hub Registration</span>
                   </button>
                 </li>
                 <li>

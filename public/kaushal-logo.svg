@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="kOrangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF7A00" />
+      <stop offset="100%" stop-color="#E8590C" />
+    </linearGradient>
+    <linearGradient id="kBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#0369A1" />
+    </linearGradient>
+    <linearGradient id="kGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16A34A" />
+      <stop offset="100%" stop-color="#15803D" />
+    </linearGradient>
+    <linearGradient id="kPurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#581C87" />
+      <stop offset="100%" stop-color="#3B0764" />
+    </linearGradient>
+    <linearGradient id="kArrowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF7A00" />
+      <stop offset="100%" stop-color="#EA580C" />
+    </linearGradient>
+    <linearGradient id="kGreenSwoosh" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22C55E" />
+      <stop offset="100%" stop-color="#15803D" />
+    </linearGradient>
+    
+    <filter id="kSubtleShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0D2B45" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- ==================== TOP EMBLEM (K-FIGURE) ==================== -->
+  <g id="k-emblem" transform="translate(10, 0)">
+    <!-- 1. VERTICAL STEM SEGMENTS -->
+    <!-- Segment 1: Orange (Hardhat & Industry) -->
+    <path d="M 330 40 L 440 40 L 440 120 L 330 120 Z" fill="url(#kOrangeGrad)" />
+    <!-- Segment 1 Icon: Hardhat and Factory -->
+    <g transform="translate(350, 52) scale(0.85)" fill="#FFFFFF">
+      <!-- Hardhat -->
+      <path d="M 20 22 C 20 12 30 6 45 6 C 60 6 70 12 70 22 L 72 26 L 18 26 Z" />
+      <rect x="14" y="25" width="62" height="4" rx="2" />
+      <rect x="42" y="4" width="6" height="6" rx="1" />
+      <!-- Factory silhouette -->
+      <path d="M 25 35 L 38 35 L 38 52 L 65 52 L 65 31 L 70 31 L 70 58 L 20 58 L 20 40 Z" />
+      <polygon points="38,35 48,43 48,52 38,52" />
+      <polygon points="48,35 58,43 58,52 48,52" />
+    </g>
+
+    <!-- Segment 2: Blue (IT & Software) -->
+    <path d="M 330 122 L 440 122 L 440 202 L 330 202 Z" fill="url(#kBlueGrad)" />
+    <!-- Segment 2 Icon: Laptop & Code </ > -->
+    <g transform="translate(345, 134) scale(0.9)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <rect x="15" y="10" width="60" height="38" rx="4" stroke-width="4" fill="#0369A1" fill-opacity="0.4" />
+      <path d="M 5 50 L 85 50 C 87 50 88 52 86 54 L 80 58 L 10 58 L 4 54 C 2 52 3 50 5 50 Z" fill="#FFFFFF" stroke-width="2" />
+      <!-- Code brackets and slash -->
+      <path d="M 33 22 L 25 29 L 33 36" stroke-width="4" />
+      <path d="M 57 22 L 65 29 L 57 36" stroke-width="4" />
+      <line x1="48" y1="20" x2="42" y2="38" stroke-width="3.5" />
+    </g>
+
+    <!-- Segment 3: Green (Solar & Renewables) -->
+    <path d="M 330 204 L 440 204 L 440 284 L 330 284 Z" fill="url(#kGreenGrad)" />
+    <!-- Segment 3 Icon: Solar panels and Sun -->
+    <g transform="translate(345, 214) scale(0.88)" fill="#FFFFFF">
+      <!-- Sun -->
+      <circle cx="45" cy="18" r="8" />
+      <line x1="45" y1="4" x2="45" y2="7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+      <line x1="28" y1="18" x2="31" y2="18" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+      <line x1="59" y1="18" x2="62" y2="18" stroke-width="3" stroke-linecap="round" />
+      <line x1="33" y1="8" x2="35" y2="10" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+      <line x1="57" y1="8" x2="55" y2="10" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" />
+      <!-- Solar Grid Panel -->
+      <polygon points="12,56 78,56 70,30 20,30" fill="#FFFFFF" fill-opacity="0.15" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" />
+      <!-- Grid lines -->
+      <line x1="45" y1="30" x2="45" y2="56" stroke="#FFFFFF" stroke-width="2.5" />
+      <line x1="32" y1="30" x2="28" y2="56" stroke="#FFFFFF" stroke-width="2.5" />
+      <line x1="58" y1="30" x2="62" y2="56" stroke="#FFFFFF" stroke-width="2.5" />
+      <line x1="16" y1="43" x2="74" y2="43" stroke="#FFFFFF" stroke-width="2.5" />
+    </g>
+
+    <!-- Segment 4: Purple (Healthcare & Medical) -->
+    <path d="M 330 286 L 440 286 L 440 376 C 440 380 436 384 430 384 L 334 384 C 331 384 330 381 330 376 Z" fill="url(#kPurpleGrad)" />
+    <!-- Segment 4 Icon: Stethoscope & Medical Cross -->
+    <g transform="translate(352, 298) scale(0.9)" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 22 12 L 22 28 C 22 38 32 46 42 46 C 52 46 62 38 62 28 L 62 12" stroke-width="4.5" />
+      <path d="M 18 12 L 26 12" stroke-width="4.5" />
+      <path d="M 58 12 L 66 12" stroke-width="4.5" />
+      <!-- Hose & Bell -->
+      <path d="M 42 46 L 42 58 C 42 66 52 70 56 68 C 60 66 60 58 60 58" stroke-width="4" />
+      <circle cx="60" cy="58" r="5" fill="#FFFFFF" stroke="none" />
+      <!-- Medical Cross -->
+      <g transform="translate(56, 42) scale(0.8)" fill="#FFFFFF" stroke="none">
+        <rect x="6" y="0" width="6" height="18" rx="1.5" />
+        <rect x="0" y="6" width="18" height="6" rx="1.5" />
+      </g>
+    </g>
+
+    <!-- 2. SILHOUETTE HUMAN FIGURE (Deep Navy) -->
+    <!-- Head -->
+    <circle cx="575" cy="110" r="34" fill="#0D2B45" />
+    <!-- Torso / Reaching Figure -->
+    <path d="M 462 88 C 500 130 535 152 560 160 C 585 152 620 128 656 86 C 625 155 588 200 565 240 L 515 250 C 480 200 460 130 462 88 Z" fill="#0D2B45" />
+
+    <!-- 3. DYNAMIC SWOOSH / ARROW (Tricolor) -->
+    <!-- Green Under-Swoosh -->
+    <path d="M 330 338 C 360 300 430 250 515 230 C 560 215 620 180 675 120 L 685 138 C 620 205 560 245 505 262 C 425 285 365 330 330 368 Z" fill="url(#kGreenSwoosh)" />
+    
+    <!-- White Divider Line -->
+    <path d="M 345 320 C 400 270 480 230 560 195 C 620 160 670 115 700 85 L 706 95 C 675 128 625 170 565 205 C 480 242 400 282 345 332 Z" fill="#FFFFFF" />
+
+    <!-- Orange Arrow Swoosh -->
+    <path d="M 368 290 C 430 235 505 190 585 140 C 625 115 665 80 690 55 L 650 55 L 715 35 L 715 105 L 685 75 C 655 108 610 145 570 170 C 490 220 420 265 368 310 Z" fill="url(#kArrowGrad)" />
+
+    <!-- 4. LOWER RIGHT LEG OF 'K' (Deep Navy) -->
+    <path d="M 505 260 L 675 405 L 600 405 L 452 280 Z" fill="#0D2B45" />
+  </g>
+
+  <!-- ==================== KAUSHAL WORDMARK ==================== -->
+  <g id="kaushal-text">
+    <!-- Main "KAUSHAL" text rendered as high-contrast paths -->
+    <g fill="#0D2B45" transform="translate(85, 410)">
+      <!-- K -->
+      <path d="M 0 0 L 25 0 L 25 45 L 70 0 L 105 0 L 52 48 L 108 110 L 74 110 L 25 55 L 25 110 L 0 110 Z" />
+
+      <!-- A (with vibrant Orange Triangle inside) -->
+      <g transform="translate(112, 0)">
+        <path d="M 45 0 L 72 0 L 115 110 L 88 110 L 75 75 L 40 75 L 27 110 L 0 110 Z M 57 26 L 46 56 L 69 56 Z" />
+        <!-- Orange Accent Triangle inside the A -->
+        <polygon points="38,110 77,110 57.5,75" fill="#F97316" />
+      </g>
+
+      <!-- U -->
+      <path d="M 235 0 L 260 0 L 260 70 C 260 96 276 112 302 112 C 328 112 344 96 344 70 L 344 0 L 369 0 L 369 70 C 369 110 342 132 302 132 C 262 132 235 110 235 70 Z" transform="translate(0, -10)" />
+
+      <!-- S -->
+      <path d="M 385 82 C 392 90 405 97 420 97 C 438 97 448 88 448 76 C 448 58 420 54 402 46 C 382 37 372 25 372 10 C 372 -14 394 -30 422 -30 C 440 -30 458 -22 468 -12 L 452 7 C 445 0 435 -6 422 -6 C 408 -6 398 2 398 12 C 398 28 426 32 444 40 C 466 50 475 62 475 76 C 475 102 452 118 420 118 C 396 118 376 106 366 94 Z" transform="translate(10, 0)" />
+
+      <!-- H -->
+      <path d="M 505 0 L 531 0 L 531 43 L 587 43 L 587 0 L 613 0 L 613 110 L 587 110 L 587 65 L 531 65 L 531 110 L 505 110 Z" transform="translate(10, 0)" />
+
+      <!-- A (Second A) -->
+      <g transform="translate(640, 0)">
+        <path d="M 45 0 L 72 0 L 115 110 L 88 110 L 75 75 L 40 75 L 27 110 L 0 110 Z M 57 26 L 46 56 L 69 56 Z" />
+        <polygon points="38,110 77,110 57.5,75" fill="#F97316" />
+      </g>
+
+      <!-- L -->
+      <path d="M 770 0 L 796 0 L 796 88 L 848 88 L 848 110 L 770 110 Z" transform="translate(0, 0)" />
+    </g>
+
+    <!-- Subtitle with flanking horizontal lines -->
+    <g transform="translate(0, 555)">
+      <!-- Left accent line -->
+      <line x1="30" y1="0" x2="105" y2="0" stroke="#0D2B45" stroke-width="2.2" stroke-linecap="round" />
+      
+      <!-- Text: Knowledge & Analytics for Upgrading Skills, Hiring, And Livelihoods -->
+      <text x="500" y="5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="21.5" font-weight="700" fill="#0D2B45" text-anchor="middle" letter-spacing="0.2">
+        Knowledge &amp; Analytics for Upgrading Skills, Hiring, And Livelihoods
+      </text>
+
+      <!-- Right accent line -->
+      <line x1="895" y1="0" x2="970" y2="0" stroke="#0D2B45" stroke-width="2.2" stroke-linecap="round" />
+    </g>
+  </g>
+</svg>

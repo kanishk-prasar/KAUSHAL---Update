@@ -31,7 +31,8 @@ interface HeaderProps {
   setLang: (lang: 'en' | 'mr') => void;
   profile?: LearnerProfile;
   onOpenArchModal?: () => void;
-  onOpenLoginModal?: (mode?: 'login' | 'register') => void;
+  onOpenLoginModal?: () => void;
+  onOpenRegisterModal?: () => void;
   onOpenHowItWorksModal?: () => void;
   onOpenUpdatesModal?: () => void;
 }
@@ -43,6 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
   setLang,
   onOpenArchModal,
   onOpenLoginModal,
+  onOpenRegisterModal,
   onOpenHowItWorksModal,
   onOpenUpdatesModal
 }) => {
@@ -89,9 +91,11 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-xs select-none w-full">
-      {/* 1. UTILITY TOP BAR (Light Gray Background) */}
-      <div className="bg-slate-100 border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-1.5 text-xs text-slate-800">
+    <>
+      {/* UNPINNED TOP HEADER (Scrolls away with page content) */}
+      <div className="w-full bg-white select-none">
+        {/* 1. UTILITY TOP BAR (Light Gray Background) */}
+        <div className="bg-slate-100 border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-1.5 text-xs text-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Left: Text "GOVERNMENT OF MAHARASHTRA" */}
           <div className="font-extrabold text-[#102A43] text-[11px] sm:text-xs tracking-wider uppercase flex items-center gap-2">
@@ -273,48 +277,36 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </button>
 
-          {/* Right: 4 Circular Badges (Job Search, MahaSwayam, Digital Maha, Skill India) */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-5 shrink-0">
-            {/* 1. Job Search */}
+          {/* Right: KAUSHAL Logo (Permanently fixed top right header logo) */}
+          <div className="flex items-center gap-2 shrink-0">
             <div
-              onClick={() => setActiveTab('jobs')}
-              className="flex flex-col items-center gap-1 group cursor-pointer"
-              title="Job Search & Apprenticeships"
+              onClick={() => setActiveTab('home')}
+              title="KAUSHAL - Knowledge & Analytics for Upgrading Skills, Hiring, And Livelihoods"
+              className="group relative flex items-center justify-end cursor-pointer transition-transform hover:scale-[1.02]"
             >
-              <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#E0F2FE] border border-sky-200/80 flex items-center justify-center text-[#0369A1] shadow-2xs group-hover:scale-105 group-hover:bg-[#BAE6FD] transition">
-                <Briefcase className="w-5 h-5 text-[#0369A1]" />
-              </div>
-              <span className="text-[11px] font-bold text-[#102A43] group-hover:text-sky-700 transition">
-                Job Search
-              </span>
-            </div>
-
-            
-
-           
-
-            {/* 4. Skill India */}
-            <div
-              onClick={() => setActiveTab('advisor')}
-              className="flex flex-col items-center gap-1 group cursor-pointer"
-              title="Skill India Digital Mission"
-            >
-              <div className="w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-[#DCFCE7] border border-emerald-200/80 flex items-center justify-center text-[#15803D] shadow-2xs group-hover:scale-105 group-hover:bg-[#BBF7D0] transition">
-                <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#15803D]" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
-                  <path d="M6 6h10M6 10h10M6 14h6" />
-                </svg>
-              </div>
-              <span className="text-[11px] font-bold text-[#102A43] group-hover:text-emerald-800 transition">
-                Skill India
-              </span>
+              <img
+                src="/images/kaushal-logo.png"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src.endsWith('/images/kaushal-logo.png')) {
+                    target.src = '/kaushal-logo.png';
+                  } else if (target.src.endsWith('/kaushal-logo.png')) {
+                    target.src = '/images/kaushal-logo.svg';
+                  }
+                }}
+                alt="KAUSHAL - Knowledge & Analytics for Upgrading Skills, Hiring, And Livelihoods"
+                className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto object-contain max-w-[200px] sm:max-w-[260px] lg:max-w-[320px] select-none"
+              />
             </div>
           </div>
         </div>
       </div>
+      </div>
 
-      {/* 3. PRIMARY NAVIGATION BAR (Dark Purple/Navy Background) */}
-      <nav className="bg-[#2c1444] text-white">
+      {/* 3. PINNED NAVIGATION & UPDATES HEADER (Goes upward and pins to the top when scrolling) */}
+      <header className="sticky top-0 z-50 shadow-md select-none w-full">
+        {/* PRIMARY NAVIGATION BAR (Dark Purple/Navy Background) */}
+        <nav className="bg-[#2c1444] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12">
             {/* Left Nav Menu Items matching image */}
@@ -506,7 +498,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-2.5 sm:gap-3 ml-auto">
               {/* + Register Button */}
               <button
-                onClick={() => onOpenLoginModal?.('register')}
+                onClick={() => onOpenRegisterModal?.()}
                 className="bg-[#ea580c] hover:bg-[#c2410c] text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-bold text-xs sm:text-[13px] flex items-center gap-1.5 shadow-md shadow-orange-950/20 transition cursor-pointer"
               >
                 <span className="text-base leading-none font-bold">+</span>
@@ -515,7 +507,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* -> Login Button */}
               <button
-                onClick={() => onOpenLoginModal?.('login')}
+                onClick={() => onOpenLoginModal?.()}
                 className="bg-transparent hover:bg-white/10 text-white border border-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-bold text-xs sm:text-[13px] flex items-center gap-1.5 transition cursor-pointer"
               >
                 <span className="text-sm font-bold">→</span>
@@ -645,7 +637,27 @@ export const Header: React.FC<HeaderProps> = ({
             <Compass className="w-4 h-4" />
             <span>Career Advisor</span>
           </button>
-          <div className="pt-2 border-t border-white/15 flex items-center justify-between text-xs">
+          <div className="pt-2 border-t border-white/15 grid grid-cols-2 gap-2">
+            <button
+              onClick={() => {
+                onOpenRegisterModal?.();
+                setMobileMenuOpen(false);
+              }}
+              className="bg-[#ea580c] hover:bg-[#c2410c] text-white py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1 shadow-xs cursor-pointer"
+            >
+              <span>+ Register</span>
+            </button>
+            <button
+              onClick={() => {
+                onOpenLoginModal?.();
+                setMobileMenuOpen(false);
+              }}
+              className="border border-white/60 hover:bg-white/10 text-white py-2 rounded-lg font-bold text-xs flex items-center justify-center gap-1 cursor-pointer"
+            >
+              <span>→ Login</span>
+            </button>
+          </div>
+          <div className="pt-1 flex items-center justify-between text-xs">
             <button
               onClick={() => {
                 onOpenArchModal?.();
@@ -668,5 +680,6 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       )}
     </header>
+  </>
   );
 };
