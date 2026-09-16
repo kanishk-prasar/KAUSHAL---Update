@@ -11,6 +11,7 @@
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
   }
 
   body {
@@ -18,6 +19,7 @@
     background-color: #f8fafc;
     color: #0f172a;
     line-height: 1.6;
+    overflow-x: clip;
   }
 
   /* Custom scrollbar for government portal clean feel */
@@ -35,4 +37,53 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
+}
+
+/* Continuous Marquee Animations */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 95s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-right 95s linear infinite;
+  will-change: transform;
+}
+
+.group-marquee:hover .animate-marquee-left,
+.group-marquee:hover .animate-marquee-right {
+  animation-play-state: paused;
+}
+
+.animate-ticker-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 50s linear infinite;
+  will-change: transform;
+}
+
+.animate-ticker-left:hover {
+  animation-play-state: paused;
 }

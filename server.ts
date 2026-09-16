@@ -79,6 +79,42 @@ app.post('/api/upload-kaushal-logo', (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to save Maharashtra seal directly to public/images and dist/images
+app.post('/api/upload-maharashtra-seal', (req: Request, res: Response) => {
+  try {
+    const { dataUrl } = req.body;
+    if (!dataUrl || typeof dataUrl !== 'string') {
+      return res.status(400).json({ error: 'Missing dataUrl' });
+    }
+    const matches = dataUrl.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches) {
+      return res.status(400).json({ error: 'Invalid dataUrl format' });
+    }
+    const buffer = Buffer.from(matches[2], 'base64');
+    const imagesDir = path.join(process.cwd(), 'public', 'images');
+    if (!fs.existsSync(imagesDir)) {
+      fs.mkdirSync(imagesDir, { recursive: true });
+    }
+    
+    fs.writeFileSync(path.join(imagesDir, 'govt-maharashtra.png'), buffer);
+    fs.writeFileSync(path.join(process.cwd(), 'public', 'govt-maharashtra.png'), buffer);
+
+    const distImagesDir = path.join(process.cwd(), 'dist', 'images');
+    if (fs.existsSync(distImagesDir)) {
+      fs.writeFileSync(path.join(distImagesDir, 'govt-maharashtra.png'), buffer);
+    }
+    const distDir = path.join(process.cwd(), 'dist');
+    if (fs.existsSync(distDir)) {
+      fs.writeFileSync(path.join(distDir, 'govt-maharashtra.png'), buffer);
+    }
+
+    res.json({ success: true, message: 'Maharashtra seal saved to disk successfully' });
+  } catch (err: any) {
+    console.error('Error saving Maharashtra seal:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Lazy-initialized Gemini client
 let aiClient: GoogleGenAI | null = null;
 function getAIClient(): GoogleGenAI | null {

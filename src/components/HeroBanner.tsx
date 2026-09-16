@@ -17,6 +17,9 @@ interface HeroBannerProps {
   onExploreSkills?: () => void;
   onExploreOutcomes?: () => void;
   onOpenHowItWorks?: () => void;
+  onExploreTrainee?: () => void;
+  onExplorePartner?: () => void;
+  onExploreCompanies?: () => void;
   lang?: 'en' | 'mr' | 'hi';
 }
 
@@ -25,62 +28,65 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   onExploreSkills,
   onExploreOutcomes,
   onOpenHowItWorks,
+  onExploreTrainee,
+  onExplorePartner,
+  onExploreCompanies,
   lang: _lang
 }) => {
   return (
     <div className="w-full">
-      {/* 5. HERO SECTION (Subtle Cream/Peach Gradient Background matching user banner) */}
-      <section className="relative w-full bg-gradient-to-b from-[#FFF9F3] via-[#FFF3EB] to-[#FFF8F2] overflow-hidden pt-6 sm:pt-8 lg:pt-10 pb-16 sm:pb-20">
+      {/* 5. HERO SECTION (Subtle Cream/Peach Gradient Background matching official portal) */}
+      <section className="relative w-full bg-gradient-to-b from-[#FFF9F3] via-[#FFF3EB] to-[#FFF8F2] pt-6 sm:pt-8 lg:pt-10 pb-10 sm:pb-12 border-b border-orange-200/40">
 
         {/* Main Hero Content Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-6">
             
             {/* LEFT CONTENT (Text & CTA) */}
-            <div className="lg:col-span-5 xl:col-span-5 space-y-4 sm:space-y-5 text-left">
-              {/* Headline 1 & 2 */}
+            <div className="lg:col-span-6 xl:col-span-6 space-y-4 text-left">
+              {/* Display Headlines */}
               <div className="space-y-0.5 sm:space-y-1">
-                {/* Headline 1: "From Skills to Livelihoods." (Orange, large, bold) */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] font-black tracking-tight text-[#ea580c] leading-[1.12]">
+                {/* Headline 1: "From Skills to Livelihoods." (Orange, bold) */}
+                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#ea580c] leading-[1.12]">
                   From Skills to Livelihoods.
                 </h1>
-                {/* Headline 2: "From Data to Impact." (Dark Blue, large, bold) */}
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] font-black tracking-tight text-[#102A43] leading-[1.12]">
+                {/* Headline 2: "From Data to Impact." (Dark Blue, bold) */}
+                <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#102A43] leading-[1.12]">
                   From Data to Impact.
                 </h2>
               </div>
 
-              {/* Main Title: "KAUSHAL" (Extra large, dark blue, heavy font) */}
-              <div className="pt-1 sm:pt-2">
-                <h3 className="text-5xl sm:text-6xl md:text-7xl font-black text-[#102A43] tracking-tight leading-none">
+              {/* Main Title: "KAUSHAL" with distinct accent & sub-definition */}
+              <div className="pt-1 border-l-3 border-[#ea580c] pl-4 sm:pl-5 space-y-1">
+                <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#102A43] tracking-tight leading-none">
                   KAUSHAL
                 </h3>
-                {/* Subtitle: "Knowledge & Analytics for Upgrading Skills, Hiring, And Livelihoods" (Dark blue, medium) */}
-                <p className="text-sm sm:text-base md:text-lg font-bold text-[#102A43] tracking-tight mt-2">
+                {/* Subtitle */}
+                <p className="text-sm sm:text-base font-bold text-[#102A43] tracking-tight">
                   Knowledge &amp; Analytics for Upgrading Skills, Hiring, And Livelihoods
                 </p>
               </div>
 
-              {/* Description: "A unified outcome-driven platform connecting trainees, training institutes, employers and government to track the journey from skill development to sustainable employment and livelihoods." (Gray/blue text) */}
-              <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-xl leading-relaxed font-normal">
-                A unified outcome-driven platform connecting trainees, training institutes, employers and government to track the journey from skill development to sustainable employment and livelihoods.
+              {/* Description */}
+              <p className="text-sm sm:text-[15px] text-slate-600 max-w-xl leading-relaxed font-normal">
+                A unified outcome-driven platform connecting trainees, training institutes, employers, and government to track the journey from skill development to sustainable employment and livelihoods.
               </p>
 
-              {/* Buttons: "Explore KAUSHAL ->" (Solid Orange) and "How It Works" (White pill button with a blue play icon) */}
-              <div className="pt-2 sm:pt-3 flex flex-wrap items-center gap-3 sm:gap-4">
-                {/* Button 1: "Explore KAUSHAL ->" (Solid Orange) */}
+              {/* CTA Buttons */}
+              <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
+                {/* Button 1: "Explore KAUSHAL ->" */}
                 <button
                   onClick={onExploreSkills}
-                  className="px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#ea580c] hover:bg-[#c2410c] text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-orange-600/25 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
+                  className="px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#ea580c] hover:bg-[#c2410c] text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-orange-600/20 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
                 >
                   <span>Explore KAUSHAL</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
-                {/* Button 2: "How It Works" (White pill button with a blue play icon) */}
+                {/* Button 2: "How It Works" */}
                 <button
                   onClick={onOpenHowItWorks}
-                  className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-slate-50 text-[#102A43] font-bold text-xs sm:text-sm flex items-center gap-2.5 border border-slate-300/90 shadow-xs hover:shadow-md hover:border-slate-400 transition-all cursor-pointer"
+                  className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-slate-50 text-[#102A43] font-bold text-xs sm:text-sm flex items-center gap-2.5 border border-slate-300 shadow-xs hover:shadow-md transition-all cursor-pointer"
                 >
                   <div className="w-5 h-5 rounded-full bg-[#102A43] text-white flex items-center justify-center text-[9px] shadow-xs">
                     <Play className="w-2.5 h-2.5 fill-current ml-0.5 text-white" />
@@ -88,11 +94,36 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   <span>How It Works</span>
                 </button>
               </div>
+
+              {/* Sub-alignment trust indicators */}
+              <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6 text-xs font-semibold text-slate-600 border-t border-orange-200/60 pt-3 max-w-xl">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  36 Districts Active
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-sky-500"></span>
+                  Outcome Tracking
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                  Employer Aligned
+                </span>
+              </div>
             </div>
 
-            {/* RIGHT CONTENT (Single responsive <img> tag permanently displaying the 2nd composite image) */}
-            <div className="lg:col-span-7 xl:col-span-7 relative flex items-center justify-center lg:justify-end">
-              <div className="relative w-full max-w-[720px] lg:max-w-none">
+            {/* RIGHT CONTENT (Borderless image faded softly from left and right edges into the background) */}
+            <div className="lg:col-span-6 xl:col-span-6 relative flex items-center justify-center lg:justify-end">
+              <div className="relative w-full max-w-[520px] sm:max-w-[560px] lg:max-w-[620px] overflow-hidden">
+                {/* Soft ambient radial warmth behind the image */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-orange-200/35 via-amber-100/25 to-transparent rounded-full blur-2xl pointer-events-none -z-10" />
+
+                {/* Left Edge Fade Vignette Overlay */}
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-14 sm:w-20 bg-gradient-to-r from-[#FFF6EE] via-[#FFF6EE]/80 to-transparent z-10" />
+
+                {/* Right Edge Fade Vignette Overlay */}
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-14 sm:w-20 bg-gradient-to-l from-[#FFF6EE] via-[#FFF6EE]/80 to-transparent z-10" />
+
                 <img
                   src="/images/hero-composite.png"
                   onError={(e) => {
@@ -100,19 +131,25 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     if (target.src.endsWith('/images/hero-composite.png')) {
                       target.src = '/hero-composite.png';
                     } else if (target.src.endsWith('/hero-composite.png')) {
-                      target.src = '/images/hero-composite.png.png';
+                      target.src = '/images/hero-composite.svg';
                     }
                   }}
                   alt="KAUSHAL - Skilled Maharashtra, Stronger Futures"
-                  className="w-full h-auto object-contain block select-none pointer-events-none drop-shadow-sm transition-opacity duration-300 rounded-xl"
+                  style={{
+                    maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 3%, rgba(0,0,0,0.85) 8%, black 14%, black 86%, rgba(0,0,0,0.85) 92%, rgba(0,0,0,0.15) 97%, transparent 100%), linear-gradient(to bottom, black 85%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 3%, rgba(0,0,0,0.85) 8%, black 14%, black 86%, rgba(0,0,0,0.85) 92%, rgba(0,0,0,0.15) 97%, transparent 100%), linear-gradient(to bottom, black 85%, transparent 100%)',
+                    maskComposite: 'intersect',
+                    WebkitMaskComposite: 'source-in'
+                  }}
+                  className="w-full max-h-[380px] sm:max-h-[420px] lg:max-h-[460px] object-contain block select-none pointer-events-none border-none outline-none shadow-none drop-shadow-sm"
                 />
               </div>
             </div>
 
           </div>
 
-          {/* 6. QUICK ACTION CARDS (4-Column Grid) - Directly overlapping the bottom of the hero section */}
-          <div className="mt-14 sm:mt-16 -mb-24 sm:-mb-28 relative z-30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {/* 6. QUICK ACTION CARDS (4-Column Grid) - Full cards without bottom cut-off */}
+          <div className="mt-10 sm:mt-12 mb-2 sm:mb-4 relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             
             {/* Card 1: UPGRADE: Light orange tint, graduation cap icon, text "Skills & Training", right arrow button */}
             <div
@@ -212,12 +249,15 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
       </section>
 
       {/* 7. STATISTICS SECTION (White Background, Bottom) */}
-      <section className="w-full bg-white border-b border-slate-200/90 pt-28 sm:pt-32 pb-8 sm:pb-10 relative z-10">
+      <section className="w-full bg-white border-b border-slate-200/90 py-8 sm:py-10 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/80">
             
             {/* 1. Icon (People) | 12.5 L+ | Trainees Tracked */}
-            <div className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3">
+            <button
+              onClick={onExploreTrainee}
+              className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3 text-left hover:bg-slate-50 p-2 rounded-xl transition cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-[#ea580c] shrink-0">
                 <Users className="w-6 h-6 text-[#ea580c]" />
               </div>
@@ -229,10 +269,13 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   Trainees Tracked
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* 2. Icon (Building) | 3,800+ | Training Institutes */}
-            <div className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3">
+            <button
+              onClick={onExplorePartner}
+              className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3 text-left hover:bg-slate-50 p-2 rounded-xl transition cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-[#1e40af] shrink-0">
                 <Building2 className="w-6 h-6 text-[#1e40af]" />
               </div>
@@ -241,13 +284,16 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   3,800+
                 </div>
                 <div className="text-xs sm:text-[13px] text-slate-500 font-medium mt-1">
-                  Training Institutes
+                  Training Institutes & Partners
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* 3. Icon (Briefcase) | 8,700+ | Employers */}
-            <div className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3">
+            <button
+              onClick={onExploreCompanies}
+              className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3 text-left hover:bg-slate-50 p-2 rounded-xl transition cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-[#ea580c] shrink-0">
                 <Briefcase className="w-6 h-6 text-[#ea580c]" />
               </div>
@@ -256,10 +302,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   8,700+
                 </div>
                 <div className="text-xs sm:text-[13px] text-slate-500 font-medium mt-1">
-                  Employers
+                  Companies & Employers
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* 4. Icon (Certificate) | 11.2 L+ | Certificates Issued */}
             <div className="flex items-center gap-3.5 pt-3 sm:pt-0 sm:px-3">

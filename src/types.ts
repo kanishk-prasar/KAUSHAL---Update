@@ -284,3 +284,15 @@ export interface SkillGapAnalysis {
   industryRecommendedTooling: string;
 }
 
+export type AppTab =
+  | 'home'
+  | 'outcomes'
+  | 'courses'
+  | 'jobs'
+  | 'advisor'
+  | 'simulator'
+  | 'passport'
+  | 'trainee'
+  | 'partner'
+  | 'companies';
+
