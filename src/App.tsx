@@ -18,6 +18,8 @@ import { TraineePage } from './components/TraineePage';
 import { PartnerPage } from './components/PartnerPage';
 import { CompaniesPage } from './components/CompaniesPage';
 import { TrainingPartnerModule } from './components/training-partner/TrainingPartnerModule';
+import { EmployerDashboard } from './components/employer/EmployerDashboard';
+import { TraineeDashboard } from './components/trainee/TraineeDashboard';
 import { INITIAL_USER_PROFILE } from './data/mockData';
 import { LearnerProfile, AppTab } from './types';
 import { CheckCircle2, ShieldCheck, Heart, Sparkles, Building2 } from 'lucide-react';
@@ -29,6 +31,7 @@ export default function App() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [tpModuleOpen, setTpModuleOpen] = useState(false);
+  const [tpInitialView, setTpInitialView] = useState<'entry' | 'wizard' | 'post-submission' | 'government-review' | 'approved-dashboard' | 'partner-dashboard'>('entry');
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [updatesModalOpen, setUpdatesModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -130,20 +133,22 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col font-sans selection:bg-orange-500 selection:text-white">
-      {/* Global Navigation Header */}
-      <Header
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        lang={lang}
-        setLang={setLang}
-        profile={profile}
-        onOpenArchModal={() => setArchModalOpen(true)}
-        onOpenLoginModal={() => setLoginModalOpen(true)}
-        onOpenRegisterModal={() => setRegisterModalOpen(true)}
-        onOpenHowItWorksModal={() => setHowItWorksOpen(true)}
-        onOpenUpdatesModal={() => setUpdatesModalOpen(true)}
-        onNavigateToStakeholder={handleNavigateToStakeholder}
-      />
+      {/* Global Navigation Header (Hidden on dedicated Employer & Trainee Dashboards) */}
+      {activeTab !== 'employer-dashboard' && activeTab !== 'trainee-dashboard' && (
+        <Header
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          lang={lang}
+          setLang={setLang}
+          profile={profile}
+          onOpenArchModal={() => setArchModalOpen(true)}
+          onOpenLoginModal={() => setLoginModalOpen(true)}
+          onOpenRegisterModal={() => setRegisterModalOpen(true)}
+          onOpenHowItWorksModal={() => setHowItWorksOpen(true)}
+          onOpenUpdatesModal={() => setUpdatesModalOpen(true)}
+          onNavigateToStakeholder={handleNavigateToStakeholder}
+        />
+      )}
 
       {/* Floating Global Toast */}
       {toastMessage && (
@@ -184,14 +189,42 @@ export default function App() {
             onOpenRegisterModal={() => setRegisterModalOpen(true)}
             onOpenLoginModal={() => setLoginModalOpen(true)}
             onOpenTrainingPartnerWizard={() => setTpModuleOpen(true)}
+            onOpenEmployerDashboard={() => setActiveTab('employer-dashboard')}
+            onOpenTraineeDashboard={() => setActiveTab('trainee-dashboard')}
             activeStakeholder={landingStakeholderTab}
             onStakeholderChange={(tab) => setLandingStakeholderTab(tab)}
           />
         </div>
       )}
 
+      {/* Dedicated Employer Dashboard Screen */}
+      {activeTab === 'employer-dashboard' && (
+        <div className="flex-1 w-full bg-slate-50">
+          <EmployerDashboard
+            onSignOut={() => {
+              setActiveTab('home');
+              showToast('Signed out from Employer Portal successfully.');
+            }}
+            onNavigateHome={() => setActiveTab('home')}
+          />
+        </div>
+      )}
+
+      {/* Dedicated Trainee Dashboard Screen (Aditya Raut - KID-8252678014) */}
+      {activeTab === 'trainee-dashboard' && (
+        <div className="flex-1 w-full bg-[#f8fafc]">
+          <TraineeDashboard
+            onSignOut={() => {
+              setActiveTab('home');
+              showToast('Signed out from Trainee Dashboard successfully.');
+            }}
+            onNavigateHome={() => setActiveTab('home')}
+          />
+        </div>
+      )}
+
       {/* Sub-pages (Accessible via nav items if selected) */}
-      {activeTab !== 'home' && (
+      {activeTab !== 'home' && activeTab !== 'employer-dashboard' && activeTab !== 'trainee-dashboard' && (
         <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
           {activeTab === 'courses' && (
             <div id="courses-section">
@@ -259,6 +292,7 @@ export default function App() {
             <CompaniesPage
               onOpenRegisterModal={() => setRegisterModalOpen(true)}
               onOpenLoginModal={() => setLoginModalOpen(true)}
+              onOpenEmployerDashboard={() => setActiveTab('employer-dashboard')}
               lang={lang}
             />
           )}
@@ -276,6 +310,19 @@ export default function App() {
         isOpen={loginModalOpen}
         onClose={() => setLoginModalOpen(false)}
         lang={lang}
+        onOpenTrainingPartnerDashboard={() => {
+          setLoginModalOpen(false);
+          setTpInitialView('partner-dashboard');
+          setTpModuleOpen(true);
+        }}
+        onOpenEmployerDashboard={() => {
+          setLoginModalOpen(false);
+          setActiveTab('employer-dashboard');
+        }}
+        onOpenTraineeDashboard={() => {
+          setLoginModalOpen(false);
+          setActiveTab('trainee-dashboard');
+        }}
         onLoginSuccess={(userData) => {
           setProfile((prev) => ({
             ...prev,
@@ -283,7 +330,15 @@ export default function App() {
             hindiName: userData.hindiName || prev.hindiName,
             phone: userData.phone || prev.phone
           }));
-          showToast(`Logged in successfully to Skill India Digital Hub as ${userData.name || 'User'}!`);
+          if (userData.role === 'Employer') {
+            setActiveTab('employer-dashboard');
+            showToast(`Welcome TataTech Industries! Logged into Employer Dashboard.`);
+          } else if (userData.role === 'Trainee') {
+            setActiveTab('trainee-dashboard');
+            showToast(`Welcome Aditya Raut! Logged into Trainee Dashboard (KID-8252678014).`);
+          } else {
+            showToast(`Logged in successfully to Skill India Digital Hub as ${userData.name || 'User'}!`);
+          }
         }}
       />
 
@@ -294,6 +349,7 @@ export default function App() {
         lang={lang}
         onOpenTrainingPartnerWizard={() => {
           setRegisterModalOpen(false);
+          setTpInitialView('wizard');
           setTpModuleOpen(true);
         }}
         onRegisterSuccess={(userData) => {
@@ -304,7 +360,12 @@ export default function App() {
       {/* Comprehensive KAUSHAL 20-Step Training Partner Registration & Empanelment Module */}
       <TrainingPartnerModule
         isOpen={tpModuleOpen}
-        onClose={() => setTpModuleOpen(false)}
+        initialView={tpInitialView}
+        onClose={() => {
+          setTpModuleOpen(false);
+          setTpInitialView('entry');
+          setActiveTab('home');
+        }}
       />
 
       {/* How It Works Modal */}
@@ -322,8 +383,10 @@ export default function App() {
         onNavigateToCourses={() => setActiveTab('courses')}
       />
 
-      {/* Our Partners Marquee Section: Govt of Maharashtra (Right to Left) & Private Industry (Left to Right) */}
-      <OurPartnersSection />
+      {/* Our Partners Marquee Section & Official Footer (Hidden on dedicated Employer & Trainee Dashboards) */}
+      {activeTab !== 'employer-dashboard' && activeTab !== 'trainee-dashboard' && (
+        <>
+          <OurPartnersSection />
 
       {/* Official Government of Maharashtra KAUSHAL Portal Footer */}
       <footer id="contact-footer" className="bg-[#0B3C5D] text-slate-200 text-xs border-t-4 border-[#ea580c]">
@@ -533,6 +596,8 @@ export default function App() {
           </div>
         </div>
       </footer>
+        </>
+      )}
     </div>
   );
 }

@@ -26,6 +26,8 @@ interface LandingStakeholdersSectionProps {
   onOpenRegisterModal: () => void;
   onOpenLoginModal: () => void;
   onOpenTrainingPartnerWizard?: () => void;
+  onOpenEmployerDashboard?: () => void;
+  onOpenTraineeDashboard?: () => void;
   activeStakeholder?: 'all' | 'trainee' | 'partner' | 'companies';
   onStakeholderChange?: (tab: 'all' | 'trainee' | 'partner' | 'companies') => void;
 }
@@ -39,6 +41,8 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
   onOpenRegisterModal,
   onOpenLoginModal,
   onOpenTrainingPartnerWizard,
+  onOpenEmployerDashboard,
+  onOpenTraineeDashboard,
   activeStakeholder: externalActiveStakeholder,
   onStakeholderChange
 }) => {
@@ -205,6 +209,15 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
                 </div>
 
                 <div className="flex items-center gap-3">
+                  {onOpenTraineeDashboard && (
+                    <button
+                      onClick={onOpenTraineeDashboard}
+                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition shadow-sm border border-emerald-400/30 cursor-pointer"
+                    >
+                      <GraduationCap className="w-3.5 h-3.5" />
+                      <span>Trainee Dashboard (KID-8252678014)</span>
+                    </button>
+                  )}
                   <button
                     onClick={onNavigateToCourses}
                     className="px-3.5 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold flex items-center gap-1.5 transition"
@@ -221,6 +234,7 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
                   onNavigateToCourses={onNavigateToCourses}
                   onNavigateToJobs={onNavigateToJobs}
                   onNavigateToSimulator={onNavigateToSimulator}
+                  onOpenTraineeDashboard={onOpenTraineeDashboard}
                   lang={lang}
                 />
               </div>
@@ -306,6 +320,7 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
                 <CompaniesPage
                   onOpenRegisterModal={onOpenRegisterModal}
                   onOpenLoginModal={onOpenLoginModal}
+                  onOpenEmployerDashboard={onOpenEmployerDashboard}
                   lang={lang}
                 />
               </div>

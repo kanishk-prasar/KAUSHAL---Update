@@ -294,5 +294,7 @@ export type AppTab =
   | 'passport'
   | 'trainee'
   | 'partner'
-  | 'companies';
+  | 'companies'
+  | 'employer-dashboard'
+  | 'trainee-dashboard';
 

@@ -24,21 +24,39 @@ import {
   Check,
   ChevronRight,
   Info,
+  X,
 } from 'lucide-react';
 
 interface EntryScreenProps {
   onStartRegistration: () => void;
-  onLogin: () => void;
-  onLoadDemoData: () => void;
+  onOpenPartnerLogin?: () => void;
+  onClose?: () => void;
 }
 
 export const EntryScreen: React.FC<EntryScreenProps> = ({
   onStartRegistration,
-  onLogin,
-  onLoadDemoData,
+  onOpenPartnerLogin,
+  onClose,
 }) => {
   const [trackRef, setTrackRef] = useState('');
   const [trackResult, setTrackResult] = useState<string | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginMobile, setLoginMobile] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handlePartnerSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    if (loginMobile.trim() === '8252678014' && loginPassword === 'Vanguard@2026') {
+      setShowLoginModal(false);
+      if (onOpenPartnerLogin) {
+        onOpenPartnerLogin();
+      }
+    } else {
+      setLoginError('Invalid credentials. Please enter mobile 8252678014 and password Vanguard@2026');
+    }
+  };
 
   const handleTrack = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,28 +78,39 @@ export const EntryScreen: React.FC<EntryScreenProps> = ({
 
       {/* 2. Top Government Utility & Accessibility Bar */}
       <div className="bg-[#0f2e5a] text-white text-xs px-4 sm:px-8 py-2 border-b border-slate-700">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        <div className="w-full flex items-center justify-between gap-3">
           <div className="flex items-center gap-4 text-[11px] sm:text-xs">
             <span className="font-semibold tracking-wide">
               Government of Maharashtra | महाराष्ट्र शासन
             </span>
             <span className="hidden md:inline text-slate-400">|</span>
-            <span className="hidden md:inline text-slate-200">
-              Department of Skills, Employment, Entrepreneurship & Innovation
+            <span className="hidden md:inline text-slate-200 font-medium">
+              Department of Skill Development &amp; Entrepreneurship
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px]">
-            <div className="hidden sm:flex items-center gap-1 text-slate-300">
+          <div className="flex items-center gap-3 text-[11px]">
+            <div className="hidden lg:flex items-center gap-1 text-slate-300">
               <Phone className="w-3 h-3 text-orange-400" />
               <span>Toll-Free Helpline: <strong>1800-120-8040</strong> (Mon–Sat, 09:30 AM – 06:00 PM)</span>
             </div>
-            <div className="flex items-center gap-2 border-l border-slate-700 pl-3">
+            <div className="hidden sm:flex items-center gap-2 border-l border-slate-700 pl-3">
               <span className="text-slate-300">Language:</span>
               <span className="bg-white/20 px-1.5 py-0.5 rounded font-bold text-white text-[10px]">
                 English
               </span>
             </div>
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white px-3 py-1 rounded text-xs font-bold transition-colors cursor-pointer shadow-sm ml-2 border border-red-500"
+                title="Close Portal"
+              >
+                <span>Close Portal</span>
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -90,31 +119,37 @@ export const EntryScreen: React.FC<EntryScreenProps> = ({
       <div className="bg-white border-b border-slate-200 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 sm:py-5 flex flex-col md:flex-row items-center justify-between gap-4">
           
-          {/* Official Emblem & State Title */}
+          {/* KAUSHAL Logo & Portal Title */}
           <div className="flex items-center gap-4 text-center sm:text-left">
-            {/* National Seal Symbol */}
-            <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-full border-2 border-[#b45309] bg-amber-50/60 p-1.5 flex flex-col items-center justify-center shadow-xs">
-              <Building2 className="w-7 h-7 text-[#0f2e5a]" />
-              <span className="text-[8px] font-black text-[#b45309] tracking-tighter uppercase mt-0.5">
-                SATYAMEVA JAYATE
-              </span>
+            {/* KAUSHAL Logo */}
+            <div className="shrink-0 flex items-center justify-center">
+              <img
+                src="/images/kaushal-logo.png"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src.endsWith('/images/kaushal-logo.png')) {
+                    target.src = '/kaushal-logo.png';
+                  } else if (target.src.endsWith('/kaushal-logo.png')) {
+                    target.src = '/images/kaushal-logo.svg';
+                  }
+                }}
+                alt="KAUSHAL Logo"
+                className="h-12 sm:h-14 md:h-16 w-auto object-contain select-none"
+              />
             </div>
 
             <div>
-              <div className="text-xs font-bold text-[#b45309] uppercase tracking-wider">
-                Government of Maharashtra • Department of Skills & Employment
-              </div>
               <h1 className="text-lg sm:text-2xl font-black text-[#0f2e5a] tracking-tight leading-snug">
-                KAUSHAL Training Partner Registration & Accreditation Portal
+                KAUSHAL Training Partner Registration &amp; Accreditation Portal
               </h1>
               <div className="text-xs sm:text-sm font-semibold text-slate-600">
-                Official Institutional Empanelment & Training Centre Accreditation System 2026–27
+                Official Institutional Empanelment &amp; Training Centre Accreditation System 2026–27
               </div>
             </div>
           </div>
 
-          {/* Accreditation & Standardization Badges */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+            {/* Accreditation & Standardization Badges */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
             <div className="border border-slate-200 rounded-lg p-2 bg-slate-50 text-center min-w-[95px]">
               <span className="text-[10px] font-extrabold uppercase text-[#b45309] block">
                 EMPANELLED BY
@@ -149,195 +184,115 @@ export const EntryScreen: React.FC<EntryScreenProps> = ({
         </div>
       </div>
 
-      {/* 4. Public Notification Circular Banner */}
-      <div className="bg-amber-50 border-b border-amber-200 px-4 sm:px-8 py-2 text-xs">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-hidden">
-          <span className="bg-[#b45309] text-white px-2 py-0.5 rounded text-[10px] font-bold shrink-0 uppercase tracking-wide flex items-center gap-1">
-            <AlertTriangle className="w-3 h-3" />
-            Official Notification
-          </span>
-          <p className="text-amber-950 font-medium truncate">
-            <strong>G.R. No. KAUSH-2025/CR-84:</strong> Online applications are invited for Empanelment of Training Partners (TPs) and Accreditation of Training Centres (TCs) for FY 2026–27 under MSSDS, PMKVY 4.0, and CSPS schemes. Phase-1 desktop evaluation deadline: October 31, 2026.
-          </p>
+      {/* 4. Public Notification Circular Banner - In Motion Ticker */}
+      <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-xs overflow-hidden flex items-center gap-3">
+        <span className="bg-[#b45309] text-white px-2.5 py-1 rounded text-[10px] font-bold shrink-0 uppercase tracking-wide flex items-center gap-1.5 shadow-2xs z-10">
+          <AlertTriangle className="w-3.5 h-3.5 text-amber-200" />
+          <span>Official Notification</span>
+        </span>
+        <div className="relative flex-1 overflow-hidden group">
+          <div className="flex w-max animate-marquee-left hover:[animation-play-state:paused] cursor-pointer">
+            <span className="text-amber-950 font-medium px-4 inline-flex items-center gap-2">
+              <span className="font-bold text-[#b45309]">G.R. No. KAUSH-2025/CR-84:</span> Online applications are invited for Empanelment of Training Partners (TPs) and Accreditation of Training Centres (TCs) for FY 2026–27 under MSSDS, PMKVY 4.0, and CSPS schemes. Phase-1 desktop evaluation deadline: October 31, 2026.
+              <span className="mx-4 text-amber-400 font-bold">•</span>
+              <span className="font-bold text-[#b45309]">Advisory Notice:</span> TPs must ensure all biometric Aadhaar-enabled attendance systems (AEBAS) &amp; CCTV live feeds comply with MSSDS mandate.
+              <span className="mx-4 text-amber-400 font-bold">•</span>
+              <span className="font-bold text-[#b45309]">Toll-Free Helpline:</span> Call 1800-120-8040 for registration assistance.
+            </span>
+            <span className="text-amber-950 font-medium px-4 inline-flex items-center gap-2">
+              <span className="font-bold text-[#b45309]">G.R. No. KAUSH-2025/CR-84:</span> Online applications are invited for Empanelment of Training Partners (TPs) and Accreditation of Training Centres (TCs) for FY 2026–27 under MSSDS, PMKVY 4.0, and CSPS schemes. Phase-1 desktop evaluation deadline: October 31, 2026.
+              <span className="mx-4 text-amber-400 font-bold">•</span>
+              <span className="font-bold text-[#b45309]">Advisory Notice:</span> TPs must ensure all biometric Aadhaar-enabled attendance systems (AEBAS) &amp; CCTV live feeds comply with MSSDS mandate.
+              <span className="mx-4 text-amber-400 font-bold">•</span>
+              <span className="font-bold text-[#b45309]">Toll-Free Helpline:</span> Call 1800-120-8040 for registration assistance.
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Main Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-8">
 
-        {/* 5. Primary Official Gateways (3 Clean Institutional Cards) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          
-          {/* Gateway 1: New Registration (Primary Action) */}
-          <div className="bg-white rounded-xl border-2 border-[#b45309] shadow-sm flex flex-col justify-between overflow-hidden">
-            <div className="bg-[#b45309] text-white px-5 py-3 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider">
-                New Applicant | Track A
-              </span>
-              <span className="bg-white/20 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">
-                Applications Open
-              </span>
-            </div>
-
-            <div className="p-5 flex-1 space-y-3">
-              <h2 className="text-lg font-black text-[#0f2e5a]">
-                New Training Partner Registration
-                <span className="block text-xs font-semibold text-slate-600 mt-0.5">
-                  Complete 20-Step Empanelment Dossier
+        {/* 5. Primary Official Registration Form Gateway (Focused solely on registration) */}
+        <div className="bg-white rounded-xl border-2 border-[#b45309] shadow-sm overflow-hidden">
+          <div className="bg-[#0f2e5a] text-white px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#b45309]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shrink-0">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <div>
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 block">
+                  Official Online Application • FY 2026–27
                 </span>
-              </h2>
+                <h2 className="text-base sm:text-lg font-black text-white">
+                  Training Partner Registration & Centre Accreditation Form
+                </h2>
+              </div>
+            </div>
+            <span className="bg-emerald-600 text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-2xs">
+              Applications Active
+            </span>
+          </div>
 
-              <p className="text-xs text-slate-600 leading-relaxed">
-                For Vocational Training Providers (VTPs), ITIs, Colleges, Universities, CSR Trusts, and Private Institutions seeking official accreditation under Maharashtra State skill schemes.
-              </p>
+          <div className="p-6 sm:p-8 space-y-6">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="max-w-3xl space-y-2.5">
+                <p className="text-sm font-semibold text-slate-800 leading-relaxed">
+                  Comprehensive 20-step digitized application for Vocational Training Providers (VTPs), Industrial Training Institutes (ITIs), Colleges, Universities, CSR Trusts, and Private Skill Institutions seeking institutional empanelment under the Maharashtra State Skill Development Society (MSSDS).
+                </p>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  The application covers institutional credentials, infrastructure blueprints, Fire Safety NOC compliance, NSQF-aligned curriculum mapping, certified ToT trainers, financial audit statements, and industry placement partnerships.
+                </p>
+              </div>
 
-              <div className="border-t border-slate-100 pt-3 space-y-1.5 text-xs text-slate-700">
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Entity profile, PAN, GSTIN & Trust/Board details</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Centre infrastructure, lab blueprints & CCTV surveillance</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>NSQF-aligned job roles & ToT-certified trainers</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>CA-certified financial audits & industry placement MoUs</span>
-                </div>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0 lg:min-w-[280px]">
+                <button
+                  type="button"
+                  onClick={onStartRegistration}
+                  className="bg-[#c2410c] hover:bg-[#9a3412] text-white font-bold py-3.5 px-6 rounded-lg text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-sm hover:shadow"
+                >
+                  <span>Start Registration Form</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            <div className="p-5 pt-0 bg-slate-50 border-t border-slate-100">
-              <button
-                type="button"
-                onClick={onStartRegistration}
-                className="w-full bg-[#c2410c] hover:bg-[#9a3412] text-white font-bold py-3 px-4 rounded-lg text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
-              >
-                <span>Start New Registration (20 Steps)</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <span className="text-[10px] text-slate-500 text-center block mt-2 font-medium">
-                Estimated duration: 30 to 45 minutes (Auto-save draft enabled)
-              </span>
-            </div>
-          </div>
-
-          {/* Gateway 2: Existing Training Partner Login */}
-          <div className="bg-white rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between overflow-hidden">
-            <div className="bg-[#0f2e5a] text-white px-5 py-3 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider">
-                Portal Access | Empanelled Providers
-              </span>
-              <span className="bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">
-                Login
-              </span>
-            </div>
-
-            <div className="p-5 flex-1 space-y-3">
-              <h2 className="text-lg font-black text-[#0f2e5a]">
-                Empanelled Partner Login
-                <span className="block text-xs font-semibold text-slate-600 mt-0.5">
-                  Operations & Batch Management Dashboard
-                </span>
-              </h2>
-
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Dedicated administrative access for approved Training Partners to manage enrolled batches, monitor biometric attendance, record apprenticeship placements, and submit subsidy claims.
-              </p>
-
-              <div className="border-t border-slate-100 pt-3 space-y-1.5 text-xs text-slate-700">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <span>Daily AEBAS biometric attendance monitoring</span>
+            {/* Quick Feature Highlights */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-slate-200 text-xs">
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div>
+                  <strong className="block text-slate-900 font-bold">100% Digitized</strong>
+                  <span className="text-[11px] text-slate-500">No physical submission needed</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <span>Training batch approval & assessment schedules</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div>
+                  <strong className="block text-slate-900 font-bold">20 Structured Steps</strong>
+                  <span className="text-[11px] text-slate-500">Comprehensive verification</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <span>Industry placement & employer wage records</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div>
+                  <strong className="block text-slate-900 font-bold">Instant Ref Tracking</strong>
+                  <span className="text-[11px] text-slate-500">Real-time status updates</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <span>DBT milestone subsidy billing & disbursement status</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div>
+                  <strong className="block text-slate-900 font-bold">NCVET / NSQF Aligned</strong>
+                  <span className="text-[11px] text-slate-500">Standardized quality framework</span>
                 </div>
               </div>
             </div>
-
-            <div className="p-5 pt-0 bg-slate-50 border-t border-slate-100">
-              <button
-                type="button"
-                onClick={onLogin}
-                className="w-full bg-[#0f2e5a] hover:bg-[#1e3a8a] text-white font-bold py-3 px-4 rounded-lg text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
-              >
-                <Lock className="w-4 h-4" />
-                <span>Partner Login</span>
-              </button>
-              <span className="text-[10px] text-slate-500 text-center block mt-2 font-medium">
-                Secure access via Registered Partner ID & Password
-              </span>
-            </div>
           </div>
-
-          {/* Gateway 3: Departmental Inspection / Demo Test Application */}
-          <div className="bg-white rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between overflow-hidden">
-            <div className="bg-slate-700 text-white px-5 py-3 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider">
-                Evaluation & Review | Audit View
-              </span>
-              <span className="bg-slate-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">
-                Sample
-              </span>
-            </div>
-
-            <div className="p-5 flex-1 space-y-3">
-              <h2 className="text-lg font-black text-[#0f2e5a]">
-                Verified Sample Application
-                <span className="block text-xs font-semibold text-slate-600 mt-0.5">
-                  Inspection & Review Dossier
-                </span>
-              </h2>
-
-              <p className="text-xs text-slate-600 leading-relaxed">
-                For departmental inspectors, committee evaluators, and prospective institutes to explore a fully populated, pre-verified application dossier (Pune Institute of Advanced Skills).
-              </p>
-
-              <div className="border-t border-slate-100 pt-3 space-y-1.5 text-xs text-slate-700">
-                <div className="flex items-center gap-2">
-                  <FileText className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-                  <span>All 20 sections pre-filled with compliant data</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileText className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-                  <span>Document review notes & committee decision workflow</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileText className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-                  <span>Official Acknowledgement Receipt & Verification Slip</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 pt-0 bg-slate-50 border-t border-slate-100">
-              <button
-                type="button"
-                onClick={onLoadDemoData}
-                className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-lg text-sm flex items-center justify-center gap-2 transition cursor-pointer shadow-xs"
-              >
-                <FileCheck2 className="w-4 h-4 text-amber-400" />
-                <span>Load Sample Dossier</span>
-              </button>
-              <span className="text-[10px] text-slate-500 text-center block mt-2 font-medium">
-                Recommended for departmental review & applicant reference
-              </span>
-            </div>
-          </div>
-
         </div>
 
         {/* 6. Application Status Tracker Bar */}
@@ -657,12 +612,16 @@ export const EntryScreen: React.FC<EntryScreenProps> = ({
               Start New Registration
             </button>
             <span>&bull;</span>
-            <button type="button" onClick={onLogin} className="hover:text-[#b45309] underline cursor-pointer">
-              Partner Login
-            </button>
-            <span>&bull;</span>
-            <button type="button" onClick={onLoadDemoData} className="hover:text-[#b45309] underline cursor-pointer">
-              Load Sample Dossier
+            <button
+              type="button"
+              onClick={() => {
+                setLoginMobile('8252678014');
+                setLoginPassword('Vanguard@2026');
+                setShowLoginModal(true);
+              }}
+              className="text-[#0f2e5a] hover:underline font-bold cursor-pointer"
+            >
+              Training Partner Dashboard Login
             </button>
             <span>&bull;</span>
             <span className="text-slate-500">Guidelines Manual (PDF)</span>
@@ -671,7 +630,7 @@ export const EntryScreen: React.FC<EntryScreenProps> = ({
           </div>
 
           <p className="text-[11px] text-slate-500">
-            Official portal designed and hosted by National Informatics Centre (NIC) / MKCL for the Department of Skills, Employment, Entrepreneurship & Innovation, Government of Maharashtra.
+            Official portal designed and hosted by National Informatics Centre (NIC) / MKCL for the Department of Skill Development &amp; Entrepreneurship, Government of Maharashtra.
           </p>
           <p className="text-[10px] text-slate-400">
             Portal Version 4.2.0 &bull; Last Updated: September 16, 2026 &bull; All Rights Reserved &copy; 2026 Government of Maharashtra.
@@ -679,6 +638,97 @@ export const EntryScreen: React.FC<EntryScreenProps> = ({
         </div>
 
       </div>
+
+      {/* TRAINING PARTNER LOGIN MODAL */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full overflow-hidden">
+            
+            {/* Modal Header */}
+            <div className="bg-[#0f2e5a] text-white p-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-amber-400 border border-white/20">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold leading-tight">Training Partner Portal Login</h3>
+                  <p className="text-[11px] text-slate-300">Department of Skill Development &amp; Entrepreneurship</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowLoginModal(false)}
+                className="w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Form */}
+            <form onSubmit={handlePartnerSubmit} className="p-6 space-y-4">
+              
+              {/* Credentials reminder badge */}
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-blue-900">
+                  <ShieldCheck className="w-4 h-4 text-blue-600" />
+                  <span>Authorized Empanelled Partner Access</span>
+                </div>
+                <div className="text-[11px] text-blue-800 flex items-center justify-between">
+                  <span>Mobile: <strong className="font-mono">8252678014</strong></span>
+                  <span>Password: <strong className="font-mono">Vanguard@2026</strong></span>
+                </div>
+              </div>
+
+              {loginError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-medium flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 shrink-0 text-red-600" />
+                  <span>{loginError}</span>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Registered Mobile Number
+                </label>
+                <input
+                  type="text"
+                  value={loginMobile}
+                  onChange={(e) => setLoginMobile(e.target.value)}
+                  placeholder="8252678014"
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#0f2e5a] focus:border-transparent transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#0f2e5a] focus:border-transparent transition"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-[#0f2e5a] hover:bg-[#1e3a8a] text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Lock className="w-4 h-4 text-amber-400" />
+                  <span>Sign In to Training Partner Dashboard</span>
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -38,6 +38,7 @@ import {
   ThermaxLogo,
   CiplaLogo
 } from './PartnerLogos';
+import { MAHARASHTRA_DISTRICTS } from './training-partner/maharashtraDistricts';
 
 interface PartnerPageProps {
   onOpenRegisterModal?: () => void;
@@ -480,13 +481,11 @@ export const PartnerPage: React.FC<PartnerPageProps> = ({
                       onChange={(e) => setFormData({ ...formData, district: e.target.value })}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs"
                     >
-                      <option>Pune</option>
-                      <option>Mumbai City</option>
-                      <option>Nagpur</option>
-                      <option>Nashik</option>
-                      <option>Chhatrapati Sambhajinagar</option>
-                      <option>Kolhapur</option>
-                      <option>Thane</option>
+                      {MAHARASHTRA_DISTRICTS.map((dist) => (
+                        <option key={dist} value={dist}>
+                          {dist}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>

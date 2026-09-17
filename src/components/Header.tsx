@@ -510,7 +510,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setActiveTab('companies');
                   }
                 }}
-                className={getNavBtnClass(activeTab === 'companies')}
+                className={getNavBtnClass(activeTab === 'companies' || activeTab === 'employer-dashboard')}
               >
                 <span>Companies</span>
               </button>

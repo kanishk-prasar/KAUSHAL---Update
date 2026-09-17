@@ -15,6 +15,10 @@ interface SkillIndiaLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLoginSuccess: (user: Partial<LearnerProfile> & { role?: string }) => void;
+  onOpenTrainingPartnerDashboard?: () => void;
+  onOpenEmployerDashboard?: () => void;
+  onOpenTraineeDashboard?: () => void;
+  initialRole?: RoleType;
   lang: 'en' | 'mr' | 'hi';
 }
 
@@ -24,13 +28,26 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
   isOpen,
   onClose,
   onLoginSuccess,
+  onOpenTrainingPartnerDashboard,
+  onOpenEmployerDashboard,
+  onOpenTraineeDashboard,
+  initialRole = 'trainee',
   lang: _lang
 }) => {
-  const [selectedRole, setSelectedRole] = useState<RoleType>('trainee');
+  const [selectedRole, setSelectedRole] = useState<RoleType>(initialRole);
   const [step, setStep] = useState<'select' | 'auth'>('select');
 
+  useEffect(() => {
+    if (initialRole) {
+      setSelectedRole(initialRole);
+    }
+  }, [initialRole, isOpen]);
+
   // Trainee Auth State
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [traineeAuthMethod, setTraineeAuthMethod] = useState<'id_pass' | 'otp'>('id_pass');
+  const [traineeId, setTraineeId] = useState('KID-8252678014');
+  const [traineePassword, setTraineePassword] = useState('Venguard@2026');
+  const [mobileNumber, setMobileNumber] = useState('8252678014');
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
 
@@ -80,32 +97,50 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
 
   const handleCompleteTraineeLogin = (isDemo = false) => {
     onLoginSuccess({
-      name: isDemo ? 'Kavita Sharma' : 'Verified Trainee',
-      hindiName: isDemo ? 'कविता शर्मा' : 'प्रमाणित शिकाऊ',
-      phone: mobileNumber ? `+91 ${mobileNumber}` : '+91 98765 43210',
+      name: 'Aditya Raut',
+      hindiName: 'आदित्य राऊत',
+      phone: '+91 76679 46913',
       role: 'Trainee'
     });
     handleResetAndClose();
+    if (onOpenTraineeDashboard) {
+      onOpenTraineeDashboard();
+    }
   };
 
   const handleCompletePartnerLogin = (isDemo = false) => {
+    const isVanguard =
+      (partnerId.trim() === '8252678014' && partnerPass === 'Vanguard@2026') ||
+      partnerId.trim() === '8252678014';
+
+    if (isVanguard && onOpenTrainingPartnerDashboard) {
+      handleResetAndClose();
+      onOpenTrainingPartnerDashboard();
+      return;
+    }
+
     onLoginSuccess({
-      name: isDemo
+      name: isVanguard
+        ? 'Pune Skill Development Centre (Sanjay More)'
+        : isDemo
         ? 'Tata Motors EV Skill Hub'
         : partnerId || 'Affiliated Skill Training Partner',
+      phone: isVanguard ? '8252678014' : undefined,
       role: 'Partner'
     });
     handleResetAndClose();
   };
 
-  const handleCompleteEmployerLogin = (isDemo = false) => {
+  const handleCompleteEmployerLogin = () => {
     onLoginSuccess({
-      name: isDemo
-        ? 'Mahindra Electric Mobility (Employer)'
-        : employerEmail || 'Verified Employer',
+      name: 'TataTech Industries',
+      phone: '8252678014',
       role: 'Employer'
     });
     handleResetAndClose();
+    if (onOpenEmployerDashboard) {
+      onOpenEmployerDashboard();
+    }
   };
 
   const handleResetAndClose = () => {
@@ -435,81 +470,172 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
             {/* FORM 1: TRAINEE LOGIN */}
             {selectedRole === 'trainee' && (
               <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Mobile Number (Registered with SIDH or Aadhaar)
-                  </label>
-                  <div className="relative flex rounded-lg border border-gray-300 overflow-hidden focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-100">
-                    <span className="px-3 py-2 bg-gray-100 text-gray-600 text-xs font-semibold border-r border-gray-300 flex items-center">
-                      +91
-                    </span>
-                    <input
-                      type="tel"
-                      value={mobileNumber}
-                      onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="Enter 10-digit mobile number"
-                      className="flex-1 px-3 py-2 text-sm text-slate-900 focus:outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleSendOtp}
-                      disabled={mobileNumber.length < 10}
-                      className={`px-4 text-xs font-semibold transition ${
-                        mobileNumber.length >= 10
-                          ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      }`}
-                    >
-                      {otpSent ? 'Resend' : 'Get OTP'}
-                    </button>
-                  </div>
+                {/* Auth Mode Toggle */}
+                <div className="flex rounded-lg bg-slate-100 p-1 text-xs font-semibold">
+                  <button
+                    type="button"
+                    onClick={() => setTraineeAuthMethod('id_pass')}
+                    className={`flex-1 py-1.5 rounded-md transition cursor-pointer text-center ${
+                      traineeAuthMethod === 'id_pass'
+                        ? 'bg-white text-[#103770] shadow-xs font-bold'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Trainee ID &amp; Password
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTraineeAuthMethod('otp')}
+                    className={`flex-1 py-1.5 rounded-md transition cursor-pointer text-center ${
+                      traineeAuthMethod === 'otp'
+                        ? 'bg-white text-[#103770] shadow-xs font-bold'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Mobile Number &amp; OTP
+                  </button>
                 </div>
 
-                {otpSent && (
-                  <div className="space-y-2 transition-all duration-300">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-semibold text-slate-700">Enter 6-Digit OTP</label>
-                      <span className="text-[11px] text-emerald-600 font-medium">Auto-detected (Demo OTP: 482910)</span>
+                {traineeAuthMethod === 'id_pass' ? (
+                  <div className="space-y-3">
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-xs font-semibold text-slate-700">
+                          Trainee ID (KID) / Registration No.
+                        </label>
+                        <span className="text-[10px] text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded">
+                          Official SIDH ID
+                        </span>
+                      </div>
+                      <input
+                        type="text"
+                        value={traineeId}
+                        onChange={(e) => setTraineeId(e.target.value)}
+                        placeholder="e.g. KID-8252678014"
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 font-mono focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      />
                     </div>
-                    <input
-                      type="text"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      placeholder="• • • • • •"
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-center font-mono tracking-widest text-lg font-bold text-slate-800 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    />
+
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-xs font-semibold text-slate-700">Password</label>
+                        <span className="text-[10px] text-slate-500">Security Key</span>
+                      </div>
+                      <input
+                        type="password"
+                        value={traineePassword}
+                        onChange={(e) => setTraineePassword(e.target.value)}
+                        placeholder="••••••••••••"
+                        className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                      />
+                    </div>
+
+                    {/* Pre-filled credentials note */}
+                    <div className="p-2 rounded-lg bg-blue-50/70 border border-blue-200/80 text-[11px] text-blue-900 flex items-center justify-between">
+                      <div>
+                        <span>Credentials: </span>
+                        <strong className="font-mono">KID-8252678014</strong> /{' '}
+                        <strong className="font-mono">Venguard@2026</strong>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setTraineeId('KID-8252678014');
+                          setTraineePassword('Venguard@2026');
+                        }}
+                        className="text-[10px] font-bold text-blue-700 underline hover:text-blue-900 cursor-pointer"
+                      >
+                        Auto-fill
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCompleteTraineeLogin(false)}
+                      disabled={!traineeId}
+                      className="w-full py-2.5 rounded-xl font-bold text-sm shadow bg-[#103770] hover:bg-[#0b2955] text-white transition cursor-pointer mt-1"
+                    >
+                      Login to Trainee Dashboard
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Mobile Number (Registered with SIDH or Aadhaar)
+                      </label>
+                      <div className="relative flex rounded-lg border border-gray-300 overflow-hidden focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-100">
+                        <span className="px-3 py-2 bg-gray-100 text-gray-600 text-xs font-semibold border-r border-gray-300 flex items-center">
+                          +91
+                        </span>
+                        <input
+                          type="tel"
+                          value={mobileNumber}
+                          onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                          placeholder="Enter 10-digit mobile number"
+                          className="flex-1 px-3 py-2 text-sm text-slate-900 focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleSendOtp}
+                          disabled={mobileNumber.length < 10}
+                          className={`px-4 text-xs font-semibold transition ${
+                            mobileNumber.length >= 10
+                              ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
+                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          }`}
+                        >
+                          {otpSent ? 'Resend' : 'Get OTP'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {otpSent && (
+                      <div className="space-y-2 transition-all duration-300">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-semibold text-slate-700">Enter 6-Digit OTP</label>
+                          <span className="text-[11px] text-emerald-600 font-medium">Auto-detected (Demo OTP: 482910)</span>
+                        </div>
+                        <input
+                          type="text"
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value)}
+                          placeholder="• • • • • •"
+                          className="w-full px-3 py-2 rounded-lg border border-gray-300 text-center font-mono tracking-widest text-lg font-bold text-slate-800 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                        />
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleCompleteTraineeLogin(false)}
+                      disabled={!otpSent || otp.length < 6}
+                      className={`w-full py-2.5 rounded-xl font-bold text-sm shadow transition ${
+                        otpSent && otp.length >= 6
+                          ? 'bg-[#103770] text-white hover:bg-[#0b2955] cursor-pointer'
+                          : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      }`}
+                    >
+                      Verify &amp; Enter Dashboard
+                    </button>
                   </div>
                 )}
 
-                <div className="pt-2 flex flex-col gap-2.5">
-                  <button
-                    onClick={() => handleCompleteTraineeLogin(false)}
-                    disabled={!otpSent || otp.length < 6}
-                    className={`w-full py-2.5 rounded-xl font-bold text-sm shadow transition ${
-                      otpSent && otp.length >= 6
-                        ? 'bg-[#103770] text-white hover:bg-[#0b2955] cursor-pointer'
-                        : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    }`}
-                  >
-                    Verify &amp; Login
-                  </button>
-
-                  <div className="relative my-2 text-center">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-gray-200"></div>
-                    </div>
-                    <span className="relative px-3 bg-white text-[11px] text-gray-500">or express prototype access</span>
+                <div className="relative my-2 text-center">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200"></div>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCompleteTraineeLogin(true)}
-                    className="w-full py-2 px-3 border border-amber-500/40 bg-amber-50/50 hover:bg-amber-100/60 rounded-xl text-xs font-semibold text-amber-900 transition flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <UserCheck className="w-4 h-4 text-amber-600" />
-                    <span>Instant Demo Login as Kavita Sharma (Trainee)</span>
-                  </button>
+                  <span className="relative px-3 bg-white text-[11px] text-gray-500">or 1-click access</span>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleCompleteTraineeLogin(true)}
+                  className="w-full py-2 px-3 border border-blue-500/40 bg-blue-50/60 hover:bg-blue-100/70 rounded-xl text-xs font-bold text-blue-900 transition flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <UserCheck className="w-4 h-4 text-blue-600" />
+                  <span>Instant Login as Aditya Raut (KID-8252678014)</span>
+                </button>
               </div>
             )}
 
@@ -545,14 +671,6 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
                   >
                     Partner Console Login
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => handleCompletePartnerLogin(true)}
-                    className="w-full py-2 px-3 border border-blue-200 bg-blue-50/50 hover:bg-blue-100/60 rounded-xl text-xs font-semibold text-blue-900 transition flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <ShieldCheck className="w-4 h-4 text-blue-600" />
-                    <span>Instant Demo Login as Tata Motors EV Skill Hub (Partner)</span>
-                  </button>
                 </div>
               </div>
             )}
@@ -562,15 +680,18 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Corporate Email / CIN / TAN
+                    Corporate Registered Mobile / ID / CIN
                   </label>
                   <input
                     type="text"
                     value={employerEmail}
                     onChange={(e) => setEmployerEmail(e.target.value)}
-                    placeholder="e.g. careers@mahindra.com or L28920MH1945PLC004594"
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                    placeholder="8252678014"
+                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 font-mono"
                   />
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Demo Login: <code className="text-slate-600 font-bold">8252678014</code>
+                  </span>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
@@ -578,24 +699,20 @@ export const SkillIndiaLoginModal: React.FC<SkillIndiaLoginModalProps> = ({
                     type="password"
                     value={employerPass}
                     onChange={(e) => setEmployerPass(e.target.value)}
-                    placeholder="••••••••••••"
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                    placeholder="Vanguard@2026"
+                    className="w-full px-3 py-2 text-sm rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 font-mono"
                   />
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Default Password: <code className="text-slate-600 font-bold">Vanguard@2026</code>
+                  </span>
                 </div>
                 <div className="pt-2 flex flex-col gap-2.5">
                   <button
-                    onClick={() => handleCompleteEmployerLogin(false)}
-                    className="w-full py-2.5 bg-[#103770] hover:bg-[#0b2955] text-white rounded-xl font-semibold text-sm shadow transition cursor-pointer"
+                    onClick={handleCompleteEmployerLogin}
+                    className="w-full py-2.5 bg-[#103770] hover:bg-[#0b2955] text-white rounded-xl font-semibold text-sm shadow transition cursor-pointer flex items-center justify-center gap-2"
                   >
-                    Employer Portal Login
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleCompleteEmployerLogin(true)}
-                    className="w-full py-2 px-3 border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100/60 rounded-xl text-xs font-semibold text-emerald-900 transition flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Briefcase className="w-4 h-4 text-emerald-600" />
-                    <span>Instant Demo Login as Mahindra Electric Mobility (Employer)</span>
+                    <Briefcase className="w-4 h-4 text-amber-400" />
+                    <span>Login to Employer Dashboard</span>
                   </button>
                 </div>
               </div>

@@ -35,12 +35,14 @@ import { JOBS_DATA } from '../data/mockData';
 interface CompaniesPageProps {
   onOpenRegisterModal?: () => void;
   onOpenLoginModal?: () => void;
+  onOpenEmployerDashboard?: () => void;
   lang: 'en' | 'mr' | 'hi';
 }
 
 export const CompaniesPage: React.FC<CompaniesPageProps> = ({
   onOpenRegisterModal,
   onOpenLoginModal,
+  onOpenEmployerDashboard,
   lang
 }) => {
   const [activeTab, setActiveTab] = useState<'directory' | 'post-job' | 'incentives' | 'melava'>('directory');
@@ -209,7 +211,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({
               <span>Post Vacancy / Apprenticeship</span>
             </button>
             <button
-              onClick={onOpenLoginModal}
+              onClick={onOpenEmployerDashboard || onOpenLoginModal}
               className="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition cursor-pointer"
             >
               <Users className="w-4 h-4" />

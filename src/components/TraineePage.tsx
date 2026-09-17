@@ -28,6 +28,7 @@ interface TraineePageProps {
   onNavigateToCourses: () => void;
   onNavigateToJobs: () => void;
   onNavigateToSimulator: () => void;
+  onOpenTraineeDashboard?: () => void;
   lang: 'en' | 'mr' | 'hi';
 }
 
@@ -36,6 +37,7 @@ export const TraineePage: React.FC<TraineePageProps> = ({
   onNavigateToCourses,
   onNavigateToJobs,
   onNavigateToSimulator,
+  onOpenTraineeDashboard,
   lang
 }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'passport' | 'enrolled' | 'applications'>('overview');
@@ -71,6 +73,15 @@ export const TraineePage: React.FC<TraineePageProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            {onOpenTraineeDashboard && (
+              <button
+                onClick={onOpenTraineeDashboard}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition cursor-pointer border border-emerald-400/40"
+              >
+                <GraduationCap className="w-4 h-4" />
+                <span>Open Trainee Dashboard (KID-8252678014)</span>
+              </button>
+            )}
             <button
               onClick={onNavigateToCourses}
               className="bg-[#ea580c] hover:bg-[#c2410c] text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition cursor-pointer"
