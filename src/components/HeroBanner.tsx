@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ArrowRight,
   GraduationCap,
@@ -9,7 +9,13 @@ import {
   Briefcase,
   Award,
   BarChart3,
-  Play
+  Play,
+  Upload,
+  Image as ImageIcon,
+  Trash2,
+  CheckCircle2,
+  RefreshCw,
+  Sparkles
 } from 'lucide-react';
 
 interface HeroBannerProps {
@@ -33,6 +39,100 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   onExploreCompanies,
   lang: _lang
 }) => {
+  const [heroImage, setHeroImage] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem('kaushal_landing_hero_image') || null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadToast, setUploadToast] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileProcess = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file (PNG, JPG, WebP, SVG)');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const rawDataUrl = e.target?.result as string;
+
+      if (file.type === 'image/svg+xml' || file.size < 1024 * 1024) {
+        try {
+          localStorage.setItem('kaushal_landing_hero_image', rawDataUrl);
+          setHeroImage(rawDataUrl);
+          setUploadToast('Landing page image saved permanently!');
+          setTimeout(() => setUploadToast(null), 3500);
+          return;
+        } catch (err) {
+          console.warn('Direct storage quota exceeded, downscaling...');
+        }
+      }
+
+      // Canvas downscaling to guarantee permanent localStorage retention
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_WIDTH = 1200;
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const optimizedUrl = canvas.toDataURL('image/jpeg', 0.85);
+          try {
+            localStorage.setItem('kaushal_landing_hero_image', optimizedUrl);
+            setHeroImage(optimizedUrl);
+            setUploadToast('Landing page image saved permanently!');
+            setTimeout(() => setUploadToast(null), 3500);
+          } catch (storageErr) {
+            console.error('Storage error:', storageErr);
+            alert('Image could not be saved to local storage. Please select a smaller image.');
+          }
+        }
+      };
+      img.src = rawDataUrl;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileProcess(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFileProcess(e.target.files[0]);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    try {
+      localStorage.removeItem('kaushal_landing_hero_image');
+    } catch (e) {
+      console.error(e);
+    }
+    setHeroImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    setUploadToast('Landing page image removed from permanent storage');
+    setTimeout(() => setUploadToast(null), 3000);
+  };
+
   return (
     <div className="w-full">
       {/* 5. HERO SECTION (Subtle Cream/Peach Gradient Background matching official portal) */}
@@ -46,30 +146,37 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             <div className="lg:col-span-6 xl:col-span-6 space-y-4 text-left">
               {/* Display Headlines */}
               <div className="space-y-0.5 sm:space-y-1">
-                {/* Headline 1: "From Skills to Livelihoods." (Orange, bold) */}
-                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#ea580c] leading-[1.12]">
-                  From Skills to Livelihoods.
+                {/* Headline 1: "From Skills to Livelihoods" (Orange, bold, smaller without period) */}
+                <h1 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-tight text-[#ea580c] leading-[1.18]">
+                  From Skills to Livelihoods
                 </h1>
-                {/* Headline 2: "From Data to Impact." (Dark Blue, bold) */}
-                <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#102A43] leading-[1.12]">
-                  From Data to Impact.
+                {/* Headline 2: "From Data to Impact" (Dark Blue, bold, smaller without period) */}
+                <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-tight text-[#0B3C5D] leading-[1.18]">
+                  From Data to Impact
                 </h2>
               </div>
 
-              {/* Main Title: "KAUSHAL" with distinct accent & sub-definition */}
-              <div className="pt-1 border-l-3 border-[#ea580c] pl-4 sm:pl-5 space-y-1">
-                <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#102A43] tracking-tight leading-none">
+              {/* HIGHLIGHTED "KAUSHAL" BRAND TITLE (Without outer box & without Hindi text) */}
+              <div className="pt-1 space-y-1.5">
+                <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#ea580c] leading-none drop-shadow-xs">
                   KAUSHAL
                 </h3>
-                {/* Subtitle */}
-                <p className="text-sm sm:text-base font-bold text-[#102A43] tracking-tight">
-                  Knowledge &amp; Analytics for Upgrading Skills, Hiring, And Livelihoods
+
+                {/* Highlighted Full Acronym Title */}
+                <p className="text-xs sm:text-sm lg:text-[15px] font-bold text-[#0B3C5D] tracking-tight leading-snug">
+                  <span className="text-[#ea580c] font-black">K</span>nowledge &amp;{' '}
+                  <span className="text-[#ea580c] font-black">A</span>nalytics for{' '}
+                  <span className="text-[#ea580c] font-black">U</span>pgrading{' '}
+                  <span className="text-[#ea580c] font-black">S</span>kills,{' '}
+                  <span className="text-[#ea580c] font-black">H</span>iring,{' '}
+                  <span className="text-[#ea580c] font-black">A</span>nd{' '}
+                  <span className="text-[#ea580c] font-black">L</span>ivelihoods
                 </p>
               </div>
 
               {/* Description */}
-              <p className="text-sm sm:text-[15px] text-slate-600 max-w-xl leading-relaxed font-normal">
-                A unified outcome-driven platform connecting trainees, training institutes, employers, and government to track the journey from skill development to sustainable employment and livelihoods.
+              <p className="text-sm sm:text-[15px] text-slate-700 max-w-xl leading-relaxed font-normal">
+                A unified outcome-driven platform connecting trainees, training institutes, employers, and government to track the complete journey from skill development to sustainable employment and livelihoods across Maharashtra.
               </p>
 
               {/* CTA Buttons */}
@@ -112,38 +219,118 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </div>
             </div>
 
-            {/* RIGHT CONTENT (Borderless image faded softly from left and right edges into the background) */}
+            {/* RIGHT CONTENT: Persistent Upload Zone or Uploaded Image */}
             <div className="lg:col-span-6 xl:col-span-6 relative flex items-center justify-center lg:justify-end">
-              <div className="relative w-full max-w-[520px] sm:max-w-[560px] lg:max-w-[620px] overflow-hidden">
-                {/* Soft ambient radial warmth behind the image */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-orange-200/35 via-amber-100/25 to-transparent rounded-full blur-2xl pointer-events-none -z-10" />
+              {/* Hidden file input for manual file picking */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
 
-                {/* Left Edge Fade Vignette Overlay */}
-                <div className="pointer-events-none absolute inset-y-0 left-0 w-14 sm:w-20 bg-gradient-to-r from-[#FFF6EE] via-[#FFF6EE]/80 to-transparent z-10" />
+              {/* Toast for Upload Status */}
+              {uploadToast && (
+                <div className="absolute -top-12 right-0 z-30 bg-slate-900/95 text-white text-xs font-medium py-2 px-3.5 rounded-xl shadow-xl flex items-center gap-2 border border-slate-700 backdrop-blur-sm animate-in fade-in">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>{uploadToast}</span>
+                </div>
+              )}
 
-                {/* Right Edge Fade Vignette Overlay */}
-                <div className="pointer-events-none absolute inset-y-0 right-0 w-14 sm:w-20 bg-gradient-to-l from-[#FFF6EE] via-[#FFF6EE]/80 to-transparent z-10" />
+              {heroImage ? (
+                /* Uploaded Image View with Persistent Controls */
+                <div className="relative w-full max-w-[520px] sm:max-w-[560px] lg:max-w-[620px] group">
+                  {/* Soft ambient radial warmth behind the image */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-200/35 via-amber-100/25 to-transparent rounded-3xl blur-2xl pointer-events-none -z-10" />
 
-                <img
-                  src="/images/hero-composite.png"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    if (target.src.endsWith('/images/hero-composite.png')) {
-                      target.src = '/hero-composite.png';
-                    } else if (target.src.endsWith('/hero-composite.png')) {
-                      target.src = '/images/hero-composite.svg';
-                    }
+                  {/* Top Action Bar */}
+                  <div className="absolute top-3 right-3 z-20 flex items-center gap-2 bg-white/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl shadow-md border border-slate-200/80 transition-opacity">
+                    <span className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 pr-1.5 border-r border-slate-200">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Saved Permanently
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                      title="Upload a different image"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Change</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="px-2.5 py-1 text-xs font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                      title="Remove saved image"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Remove</span>
+                    </button>
+                  </div>
+
+                  {/* Rendered Uploaded Image */}
+                  <div className="rounded-3xl overflow-hidden border border-orange-200/60 shadow-lg bg-white/50 backdrop-blur-sm p-2">
+                    <img
+                      src={heroImage}
+                      alt="Uploaded Landing Page Hero"
+                      className="w-full max-h-[380px] sm:max-h-[420px] lg:max-h-[460px] object-contain rounded-2xl block select-none mx-auto"
+                    />
+                  </div>
+                </div>
+              ) : (
+                /* Empty State: Intuitive Drag & Drop and Click-to-Upload Zone */
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
                   }}
-                  alt="KAUSHAL - Skilled Maharashtra, Stronger Futures"
-                  style={{
-                    maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 3%, rgba(0,0,0,0.85) 8%, black 14%, black 86%, rgba(0,0,0,0.85) 92%, rgba(0,0,0,0.15) 97%, transparent 100%), linear-gradient(to bottom, black 85%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 3%, rgba(0,0,0,0.85) 8%, black 14%, black 86%, rgba(0,0,0,0.85) 92%, rgba(0,0,0,0.15) 97%, transparent 100%), linear-gradient(to bottom, black 85%, transparent 100%)',
-                    maskComposite: 'intersect',
-                    WebkitMaskComposite: 'source-in'
-                  }}
-                  className="w-full max-h-[380px] sm:max-h-[420px] lg:max-h-[460px] object-contain block select-none pointer-events-none border-none outline-none shadow-none drop-shadow-sm"
-                />
-              </div>
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`relative w-full max-w-[520px] sm:max-w-[560px] lg:max-w-[580px] min-h-[320px] sm:min-h-[360px] rounded-3xl border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center p-8 sm:p-10 cursor-pointer text-center group ${
+                    isDragging
+                      ? 'border-orange-500 bg-orange-100/60 scale-[1.01] shadow-xl'
+                      : 'border-orange-300/80 hover:border-orange-500 bg-white/70 hover:bg-orange-50/40 shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  {/* Subtle Background Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-200/20 via-amber-100/20 to-transparent rounded-3xl pointer-events-none -z-10" />
+
+                  {/* Upload Icon with Animated Pulse */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-lg shadow-orange-500/20 mb-5 group-hover:scale-105 transition-transform">
+                    <Upload className="w-8 h-8 sm:w-10 sm:h-10 animate-bounce" />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
+                    Upload Landing Page Image
+                  </h3>
+
+                  {/* Subtitle / Description */}
+                  <p className="text-xs sm:text-sm text-slate-600 max-w-sm mb-4 leading-relaxed">
+                    Drag and drop your hero image or banner here, or click anywhere inside to browse files from your computer.
+                  </p>
+
+                  {/* File Support Badges */}
+                  <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+                    <span className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-600 shadow-2xs">
+                      PNG, JPG, WebP, SVG
+                    </span>
+                    <span className="px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-lg text-[11px] font-semibold text-emerald-700 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-emerald-600" />
+                      Saves Permanently in Storage
+                    </span>
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-600 group-hover:bg-orange-700 text-white text-xs sm:text-sm font-semibold shadow-md group-hover:shadow-lg transition-all">
+                    <ImageIcon className="w-4 h-4" />
+                    <span>Choose Image from Device</span>
+                  </div>
+                </div>
+              )}
             </div>
 
           </div>

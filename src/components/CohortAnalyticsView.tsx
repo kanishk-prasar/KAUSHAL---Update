@@ -172,13 +172,13 @@ export const CohortAnalyticsView: React.FC<CohortAnalyticsViewProps> = ({ traine
             <DollarSign className="w-4 h-4 text-[#0B3C5D]" />
           </div>
           <div className="text-2xl font-black text-[#0B3C5D] font-mono">
-            ₹{avgCurrentWage.toLocaleString()}
+            ₹{(avgCurrentWage ?? 0).toLocaleString()}
             <span className="text-xs text-emerald-700 font-bold ml-1.5">
               +{wageUpliftPercent}%
             </span>
           </div>
           <div className="text-[11px] text-slate-500 font-medium">
-            Baseline: ₹{avgBaselineWage.toLocaleString()} / month
+            Baseline: ₹{(avgBaselineWage ?? 0).toLocaleString()} / month
           </div>
           <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-2">
             <div className="bg-[#0B3C5D] h-full" style={{ width: '82%' }} />

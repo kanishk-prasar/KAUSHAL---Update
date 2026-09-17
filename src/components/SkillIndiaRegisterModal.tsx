@@ -12,6 +12,7 @@ interface SkillIndiaRegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
   onRegisterSuccess: (user: Partial<LearnerProfile> & { role?: string }) => void;
+  onOpenTrainingPartnerWizard?: () => void;
   lang: 'en' | 'mr' | 'hi';
 }
 
@@ -21,6 +22,7 @@ export const SkillIndiaRegisterModal: React.FC<SkillIndiaRegisterModalProps> = (
   isOpen,
   onClose,
   onRegisterSuccess,
+  onOpenTrainingPartnerWizard,
   lang: _lang
 }) => {
   const [selectedRole, setSelectedRole] = useState<RegisterRoleType>('partner');
@@ -55,6 +57,11 @@ export const SkillIndiaRegisterModal: React.FC<SkillIndiaRegisterModalProps> = (
   if (!isOpen) return null;
 
   const handleContinue = () => {
+    if (selectedRole === 'partner' && onOpenTrainingPartnerWizard) {
+      handleResetAndClose();
+      onOpenTrainingPartnerWizard();
+      return;
+    }
     setStep('form');
   };
 
@@ -64,6 +71,11 @@ export const SkillIndiaRegisterModal: React.FC<SkillIndiaRegisterModalProps> = (
 
   const handleCardDoubleClick = (role: RegisterRoleType) => {
     setSelectedRole(role);
+    if (role === 'partner' && onOpenTrainingPartnerWizard) {
+      handleResetAndClose();
+      onOpenTrainingPartnerWizard();
+      return;
+    }
     setStep('form');
   };
 

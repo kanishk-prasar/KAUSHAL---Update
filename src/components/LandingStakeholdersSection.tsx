@@ -25,6 +25,7 @@ interface LandingStakeholdersSectionProps {
   onNavigateToSimulator: () => void;
   onOpenRegisterModal: () => void;
   onOpenLoginModal: () => void;
+  onOpenTrainingPartnerWizard?: () => void;
   activeStakeholder?: 'all' | 'trainee' | 'partner' | 'companies';
   onStakeholderChange?: (tab: 'all' | 'trainee' | 'partner' | 'companies') => void;
 }
@@ -37,6 +38,7 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
   onNavigateToSimulator,
   onOpenRegisterModal,
   onOpenLoginModal,
+  onOpenTrainingPartnerWizard,
   activeStakeholder: externalActiveStakeholder,
   onStakeholderChange
 }) => {
@@ -245,10 +247,16 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
 
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={onOpenRegisterModal}
-                    className="px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold flex items-center gap-1.5 transition"
+                    onClick={() => {
+                      if (onOpenTrainingPartnerWizard) {
+                        onOpenTrainingPartnerWizard();
+                      } else {
+                        onOpenRegisterModal();
+                      }
+                    }}
+                    className="px-3.5 py-1.5 rounded-lg bg-[#ea580c] hover:bg-[#c2410c] text-white text-xs font-bold flex items-center gap-1.5 transition cursor-pointer shadow-sm"
                   >
-                    <span>Empanel Institute</span>
+                    <span>Empanel Institute (20 Steps)</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -258,6 +266,7 @@ export const LandingStakeholdersSection: React.FC<LandingStakeholdersSectionProp
                 <PartnerPage
                   onOpenRegisterModal={onOpenRegisterModal}
                   onOpenLoginModal={onOpenLoginModal}
+                  onOpenTrainingPartnerWizard={onOpenTrainingPartnerWizard}
                   lang={lang}
                 />
               </div>

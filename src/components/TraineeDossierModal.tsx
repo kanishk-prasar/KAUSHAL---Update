@@ -250,10 +250,10 @@ export const TraineeDossierModal: React.FC<TraineeDossierModalProps> = ({
             <div className="text-[11px] text-slate-400 font-medium">Pre-Training vs Current Wage</div>
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-black text-white">
-                ₹{trainee.currentMonthlyWage.toLocaleString()}
+                ₹{(trainee.currentMonthlyWage ?? 0).toLocaleString()}
               </span>
               <span className="text-xs text-slate-400 line-through">
-                ₹{trainee.preTrainingMonthlyWage.toLocaleString()}
+                ₹{(trainee.preTrainingMonthlyWage ?? 0).toLocaleString()}
               </span>
               {trainee.wageGrowthPercent > 0 && (
                 <span className="text-xs font-bold text-emerald-400">
@@ -411,7 +411,7 @@ export const TraineeDossierModal: React.FC<TraineeDossierModalProps> = ({
 
                   <div className="flex items-center gap-3">
                     <span className="font-mono font-bold text-emerald-400">
-                      ₹{log.monthlyWage.toLocaleString()}/mo
+                      ₹{(log.monthlyWage ?? 0).toLocaleString()}/mo
                     </span>
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-bold ${

@@ -42,12 +42,14 @@ import {
 interface PartnerPageProps {
   onOpenRegisterModal?: () => void;
   onOpenLoginModal?: () => void;
+  onOpenTrainingPartnerWizard?: () => void;
   lang: 'en' | 'mr' | 'hi';
 }
 
 export const PartnerPage: React.FC<PartnerPageProps> = ({
   onOpenRegisterModal,
   onOpenLoginModal,
+  onOpenTrainingPartnerWizard,
   lang
 }) => {
   const [activeTab, setActiveTab] = useState<'all' | 'govt' | 'training' | 'industry'>('all');
@@ -241,11 +243,17 @@ export const PartnerPage: React.FC<PartnerPageProps> = ({
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => setShowApplyModal(true)}
+              onClick={() => {
+                if (onOpenTrainingPartnerWizard) {
+                  onOpenTrainingPartnerWizard();
+                } else {
+                  setShowApplyModal(true);
+                }
+              }}
               className="bg-[#ea580c] hover:bg-[#c2410c] text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition cursor-pointer"
             >
               <FileCheck className="w-4 h-4" />
-              <span>Apply for Partner Empanelment</span>
+              <span>Apply for Partner Empanelment (20 Steps)</span>
             </button>
             <button
               onClick={onOpenLoginModal}

@@ -13,9 +13,11 @@ import { HowItWorksModal } from './components/HowItWorksModal';
 import { UpdatesModal } from './components/UpdatesModal';
 import { OurPartnersSection } from './components/OurPartnersSection';
 import { LandingStakeholdersSection } from './components/LandingStakeholdersSection';
+import { RealTimeSkillInsights } from './components/RealTimeSkillInsights';
 import { TraineePage } from './components/TraineePage';
 import { PartnerPage } from './components/PartnerPage';
 import { CompaniesPage } from './components/CompaniesPage';
+import { TrainingPartnerModule } from './components/training-partner/TrainingPartnerModule';
 import { INITIAL_USER_PROFILE } from './data/mockData';
 import { LearnerProfile, AppTab } from './types';
 import { CheckCircle2, ShieldCheck, Heart, Sparkles, Building2 } from 'lucide-react';
@@ -26,6 +28,7 @@ export default function App() {
   const [archModalOpen, setArchModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [tpModuleOpen, setTpModuleOpen] = useState(false);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [updatesModalOpen, setUpdatesModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -164,6 +167,13 @@ export default function App() {
             lang={lang}
           />
 
+          {/* Real-time KAUSHAL Skill Insights (Matching State Portal Skill Observability) */}
+          <RealTimeSkillInsights
+            onViewSkillReport={() => setActiveTab('courses')}
+            onViewSectorReport={() => setActiveTab('courses')}
+            onViewPlacementReport={() => setActiveTab('jobs')}
+          />
+
           {/* Trainee, Partner, and Companies Stakeholder Portals directly in Page Form on Landing Page */}
           <LandingStakeholdersSection
             profile={profile}
@@ -173,6 +183,7 @@ export default function App() {
             onNavigateToSimulator={() => setActiveTab('simulator')}
             onOpenRegisterModal={() => setRegisterModalOpen(true)}
             onOpenLoginModal={() => setLoginModalOpen(true)}
+            onOpenTrainingPartnerWizard={() => setTpModuleOpen(true)}
             activeStakeholder={landingStakeholderTab}
             onStakeholderChange={(tab) => setLandingStakeholderTab(tab)}
           />
@@ -239,6 +250,7 @@ export default function App() {
             <PartnerPage
               onOpenRegisterModal={() => setRegisterModalOpen(true)}
               onOpenLoginModal={() => setLoginModalOpen(true)}
+              onOpenTrainingPartnerWizard={() => setTpModuleOpen(true)}
               lang={lang}
             />
           )}
@@ -280,9 +292,19 @@ export default function App() {
         isOpen={registerModalOpen}
         onClose={() => setRegisterModalOpen(false)}
         lang={lang}
+        onOpenTrainingPartnerWizard={() => {
+          setRegisterModalOpen(false);
+          setTpModuleOpen(true);
+        }}
         onRegisterSuccess={(userData) => {
           showToast(`Registration submitted successfully for ${userData.name || 'Organization'}! SIDH credentials dispatched.`);
         }}
+      />
+
+      {/* Comprehensive KAUSHAL 20-Step Training Partner Registration & Empanelment Module */}
+      <TrainingPartnerModule
+        isOpen={tpModuleOpen}
+        onClose={() => setTpModuleOpen(false)}
       />
 
       {/* How It Works Modal */}

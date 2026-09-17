@@ -458,7 +458,7 @@ export const LongitudinalDashboard: React.FC<LongitudinalDashboardProps> = ({ la
                       <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-0.5">
                         <div className="text-[10px] text-slate-500 font-bold uppercase">Current Wage</div>
                         <div className="text-sm font-extrabold text-emerald-700 font-mono">
-                          ₹{trainee.currentMonthlyWage.toLocaleString()}
+                          ₹{(trainee.currentMonthlyWage ?? 0).toLocaleString()}
                         </div>
                         <div className="text-[9px] text-slate-500 font-medium">
                           +{trainee.wageGrowthPercent}% growth

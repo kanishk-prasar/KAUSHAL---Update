@@ -422,15 +422,7 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
 
-              {/* 4. Jobs */}
-              <button
-                onClick={() => setActiveTab('jobs')}
-                className={getNavBtnClass(activeTab === 'jobs')}
-              >
-                <span>Jobs</span>
-              </button>
-
-              {/* 5. Skills */}
+              {/* 4. Skills */}
               <div className="relative nav-dropdown-container">
                 <button
                   onClick={() => setOpenDropdown(openDropdown === 'skills' ? null : 'skills')}
@@ -481,7 +473,7 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
 
-              {/* 6. Trainee */}
+              {/* 5. Trainee */}
               <button
                 onClick={() => {
                   if (onNavigateToStakeholder) {
@@ -495,7 +487,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Trainee</span>
               </button>
 
-              {/* 7. Partners */}
+              {/* 6. Partners */}
               <button
                 onClick={() => {
                   if (onNavigateToStakeholder) {
@@ -509,7 +501,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Partners</span>
               </button>
 
-              {/* 8. Companies */}
+              {/* 7. Companies */}
               <button
                 onClick={() => {
                   if (onNavigateToStakeholder) {
@@ -523,31 +515,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Companies</span>
               </button>
 
-              {/* 9. Forum */}
-              <button
-                onClick={() => onOpenHowItWorksModal?.()}
-                className={getNavBtnClass(false)}
-              >
-                <span>Forum</span>
-              </button>
-
-              {/* 10. Media */}
-              <button
-                onClick={() => onOpenUpdatesModal?.()}
-                className={getNavBtnClass(false)}
-              >
-                <span>Media</span>
-              </button>
-
-              {/* 11. FAQ */}
-              <button
-                onClick={() => onOpenHowItWorksModal?.()}
-                className={getNavBtnClass(false)}
-              >
-                <span>FAQ</span>
-              </button>
-
-              {/* 12. Contact Us */}
+              {/* 8. Contact Us */}
               <button
                 onClick={() => {
                   const el = document.getElementById('contact-footer') || document.querySelector('footer');

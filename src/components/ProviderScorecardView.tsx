@@ -139,7 +139,7 @@ export const ProviderScorecardView: React.FC<ProviderScorecardViewProps> = ({
                   <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-0.5">
                     <div className="text-[10px] text-slate-500 font-bold uppercase">Median Monthly Wage</div>
                     <div className="text-sm font-black text-orange-600 font-mono">
-                      ₹{provider.medianWage.toLocaleString()}
+                      ₹{(provider.medianWage ?? 0).toLocaleString()}
                     </div>
                     <div className="text-[9px] text-slate-500 font-medium">Certified Alumni</div>
                   </div>
